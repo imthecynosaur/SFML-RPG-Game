@@ -1,7 +1,7 @@
 #include "State.h"
 
-State::State(sf::RenderWindow* window) :
-	window(window)
+State::State(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys) :
+	window(window), supportedKeys(supportedKeys)
 {
 }
 
