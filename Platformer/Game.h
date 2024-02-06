@@ -1,5 +1,5 @@
 #pragma once
-#include"States/GameState.h"
+#include"GameState.h"
 
 class Game
 {
@@ -11,6 +11,9 @@ class Game
 
 	std::stack<State*> states;
 
+	std::map<std::string, int> supportedKeys;
+
+	void initializeKeys();
 	void initializeWindow();
 	void initializeStates();
 

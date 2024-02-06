@@ -24,13 +24,23 @@ void Game::initializeWindow()
 	window->setVerticalSyncEnabled(verticalSyncEnabled);
 }
 
+void Game::initializeKeys()
+{
+	supportedKeys.emplace("Escape", sf::Keyboard::Key::Escape);
+	supportedKeys.emplace("A", sf::Keyboard::Key::A);
+	supportedKeys.emplace("D", sf::Keyboard::Key::D);
+	supportedKeys.emplace("W", sf::Keyboard::Key::W);
+	supportedKeys.emplace("S", sf::Keyboard::Key::S);
+}
+
 void Game::initializeStates()
 {
-	states.push(new GameState(window));
+	states.push(new GameState(window, &supportedKeys));
 }
 
 Game::Game()
 {
+	initializeKeys();
 	initializeWindow();
 	initializeStates();
 }
@@ -89,7 +99,7 @@ void Game::render()
 	window->clear();
 
 	if (!states.empty())
-		states.top()->render();
+		states.top()->render(window);
 
 	window->display();
 }
