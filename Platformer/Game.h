@@ -3,11 +3,14 @@
 
 class Game
 {
-	sf::RenderWindow* window;
+	sf::RenderWindow* window{nullptr};
 	sf::Event event;
+	std::vector<sf::VideoMode> videoModes;
+	sf::ContextSettings contextSettings;
+	bool fullScreen{ false };
+
 	sf::Clock clock;
-	
-	float deltaTime;
+	float deltaTime{};
 
 	std::stack<State*> states;
 
