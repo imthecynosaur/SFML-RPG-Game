@@ -26,11 +26,15 @@ void Game::initializeWindow()
 
 void Game::initializeKeys()
 {
-	supportedKeys.emplace("Escape", sf::Keyboard::Key::Escape);
-	supportedKeys.emplace("A", sf::Keyboard::Key::A);
-	supportedKeys.emplace("D", sf::Keyboard::Key::D);
-	supportedKeys.emplace("W", sf::Keyboard::Key::W);
-	supportedKeys.emplace("S", sf::Keyboard::Key::S);
+	std::ifstream ifstream("Config/supported_keys.ini");
+	if (ifstream.is_open()) {
+		std::string key { "" };
+		int keyValue{};
+		while (ifstream >> key >> keyValue) {
+			supportedKeys[key] = keyValue;
+		}
+	}
+	ifstream.close();
 }
 
 void Game::initializeStates()
