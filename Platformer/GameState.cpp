@@ -13,8 +13,8 @@ void GameState::initializeKeyBinds()
 	ifstream.close();
 }
 
-GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys) :
-	State(window, supportedKeys)
+GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
+	State(window, supportedKeys, states)
 {
 	initializeKeyBinds();
 }
@@ -44,8 +44,11 @@ void GameState::updateInput(const float& deltaTime)
 
 void GameState::update(const float& deltaTime)
 {
+	updateMousePositions();
 	updateInput(deltaTime);
 	player.update(deltaTime);
+
+	std::cout << mousePosView.x << " " << mousePosView.y << std::endl;
 }
 
 void GameState::render(sf::RenderTarget* target)

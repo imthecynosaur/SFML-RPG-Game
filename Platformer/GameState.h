@@ -8,7 +8,7 @@ class GameState :
 	void initializeKeyBinds();
 
 public:
-	GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys);
+	GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
 	virtual ~GameState();
 
 	void endState();
