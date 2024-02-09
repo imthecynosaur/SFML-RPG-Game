@@ -3,15 +3,14 @@
 class GameState :
 	public State
 {
-	Entity player;
-
+	Player* player;
 	void initializeKeyBinds();
+	void initializeTextures();
+	void initializePlayers();
 
 public:
 	GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
 	virtual ~GameState();
-
-	void endState();
 
 	void updateInput(const float& deltaTime);
 	void update(const float& deltaTime);
