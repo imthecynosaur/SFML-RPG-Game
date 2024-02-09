@@ -2,6 +2,7 @@
 
 void Player::initializeComponents()
 {
+	createMovementComponent(1000.f);
 }
 
 Player::Player(float x, float y, sf::Texture* texture)
