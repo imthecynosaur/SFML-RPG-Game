@@ -1,4 +1,5 @@
 #include "MainMenuState.h"
+#include <sstream>
 
 void MainMenuState::initializeFonts()
 {
@@ -20,11 +21,15 @@ void MainMenuState::initializeKeyBinds()
 
 void MainMenuState::initializeButtons()
 {
-	buttons.emplace("GAME_STATE", new Button(100, 100, 150, 50,
+	buttons.emplace("GAME_STATE", new Button(100, 750, 150, 50,
 		&font, "New Game",
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200)));
 
-	buttons.emplace("EXIT_STATE", new Button(100, 300, 150, 50,
+	buttons.emplace("SETTING", new Button(100, 850, 150, 50,
+		&font, "Settings",
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200)));
+
+	buttons.emplace("EXIT_STATE", new Button(100, 1000, 150, 50,
 		&font, "Quit",
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200)));
 }
@@ -35,8 +40,10 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, std::map<std::string, int
 	initializeFonts();
 	initializeKeyBinds();
 	initializeButtons();
+	
+	if (!backGround.loadFromFile("Assets/background/background.jpg"))
+		throw "ERROR::MAIN_MENU:: FAILED TO LOAD BACKGROUND";
 
-	backGround.loadFromFile("Assets/background/background.jpg");
 	BGSprite.setTexture(backGround);
 }
 
@@ -46,14 +53,8 @@ MainMenuState::~MainMenuState()
 		delete it->second;
 }
 
-void MainMenuState::endState()
-{
-
-}
-
 void MainMenuState::updateInput(const float& deltaTime)
 {
-	checkForQuit();
 }
 
 void MainMenuState::update(const float& deltaTime)
@@ -70,10 +71,11 @@ void MainMenuState::updateButtons()
 		it.second->update(mousePosView);
 
 	if (buttons["EXIT_STATE"]->isPressed())
-		quit = true;
+		endState();
 
-	if (buttons["GAME_STATE"]->isPressed())
+	if (buttons["GAME_STATE"]->isPressed()) {
 		states->push(new GameState(window, supportedKeys, states));
+	}
 }
 
 void MainMenuState::render(sf::RenderTarget* target)
@@ -82,6 +84,16 @@ void MainMenuState::render(sf::RenderTarget* target)
 		target = window;
 	target->draw(BGSprite);
 	renderButtons(target);
+
+	//REMOVE LATER
+	sf::Text mousePositionText;
+	mousePositionText.setPosition(mousePosView.x, mousePosView.y - 15);
+	mousePositionText.setFont(font);
+	mousePositionText.setCharacterSize(12);
+	std::stringstream ss;
+	ss << mousePosView.x << " " << mousePosView.y;
+	mousePositionText.setString(ss.str());
+	target->draw(mousePositionText);
 }
 
 void MainMenuState::renderButtons(sf::RenderTarget* target)

@@ -1,5 +1,5 @@
 #pragma once
-#include "Entity.h"
+#include "Player.h"
 #include "Button.h"
 
 class State
@@ -15,7 +15,7 @@ protected:
 	sf::Vector2i mousePosWindow;
 	sf::Vector2f mousePosView;
 	
-	std::vector<sf::Texture> textures;
+	std::map<std::string, sf::Texture> textures;
 
 	virtual void initializeKeyBinds() = 0;
 
@@ -24,11 +24,10 @@ public:
 	virtual ~State();
 
 	const bool getQuit() const;
-	virtual void  checkForQuit();
 
 	virtual void updateMousePositions();
 	
-	virtual void endState() = 0;
+	virtual void endState();
 	virtual void updateInput(const float& deltaTime) = 0;
 	virtual void update(const float& deltaTime) = 0;
 	virtual void render(sf::RenderTarget* target = nullptr) = 0;
