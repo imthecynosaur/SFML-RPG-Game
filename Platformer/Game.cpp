@@ -94,7 +94,6 @@ void Game::update()
 		states.top()->update(deltaTime);
 
 		if (states.top()->getQuit()) {
-			states.top()->endState();
 			delete states.top();
 			states.pop();
 		}

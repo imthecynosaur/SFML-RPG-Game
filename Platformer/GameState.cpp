@@ -50,8 +50,9 @@ void GameState::updateInput(const float& deltaTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_DOWN"))))
 		player->move(deltaTime, 0.f, 1.f);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE"))))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE")))) {
 		endState();
+	}
 }
 
 void GameState::update(const float& deltaTime)

@@ -6,6 +6,12 @@ Entity::Entity()
 
 Entity::~Entity()
 {
+	
+}
+
+void Entity::createMovementComponent(const float maxVelocity)
+{
+	movementComponent = new MovementComponent(maxVelocity);
 }
 
 void Entity::createSprite(sf::Texture* texture)
@@ -16,8 +22,10 @@ void Entity::createSprite(sf::Texture* texture)
 
 void Entity::move(const float deltaTime, const float dir_x, const float dir_y)
 {
-	if (sprite)
-		sprite->move(dir_x * movementSpeed * deltaTime, dir_y * movementSpeed * deltaTime);
+	if (sprite && movementComponent) {
+		movementComponent->move(dir_x, dir_y);
+		sprite->move(movementComponent->getVelocity() * deltaTime);
+	}
 }
 
 void Entity::setPosition(const float x, const float y)
