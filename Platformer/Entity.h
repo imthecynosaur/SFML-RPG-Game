@@ -5,8 +5,7 @@ class Entity
 {
 
 protected:
-	sf::Texture* texture{nullptr};
-	sf::Sprite* sprite{nullptr};
+	sf::Sprite sprite;
 	MovementComponent* movementComponent{ nullptr };
 
 public:
@@ -15,7 +14,7 @@ public:
 
 
 	void createMovementComponent(const float maxVelocity);
-	void createSprite(sf::Texture* texture);
+	void setTexture (sf::Texture& texture);
 	virtual void move(const float deltaTime, const float dir_x, const float dir_y);
 	virtual void setPosition(const float x, const float y);
 
