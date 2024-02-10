@@ -29,6 +29,10 @@ void MainMenuState::initializeButtons()
 		&font, "Settings",
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200)));
 
+	buttons.emplace("EDITOR_STATE", new Button(1700, 1000, 150, 50,
+		&font, "Editor",
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200)));
+
 	buttons.emplace("EXIT_STATE", new Button(100, 1000, 150, 50,
 		&font, "Quit",
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200)));

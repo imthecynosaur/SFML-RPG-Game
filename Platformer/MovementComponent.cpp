@@ -1,7 +1,7 @@
 #include "MovementComponent.h"
 
-MovementComponent::MovementComponent(sf::Sprite& sprite, float maxVelocity) :
-	sprite(sprite),  maxVelocity(maxVelocity)
+MovementComponent::MovementComponent(sf::Sprite& sprite, float maxVelocity, float acceleration, float deceleration) :
+	sprite(sprite),  maxVelocity(maxVelocity), acceleration(acceleration), deceleration(deceleration)
 {
 }
 
@@ -16,15 +16,52 @@ const sf::Vector2f MovementComponent::getVelocity() const
 
 void MovementComponent::move(const float dir_x, const float dir_y, const float deltaTime)
 {
-	velocity.x = maxVelocity * dir_x;
-	velocity.y = maxVelocity * dir_y;
+	velocity.x += acceleration * dir_x;
+	if (velocity.x > 0.f) {
+		if (velocity.x > maxVelocity)
+			velocity.x = maxVelocity;
+	}
+	else if(velocity.x < 0.f) {
+		if (velocity.x < -maxVelocity)
+			velocity.x = -maxVelocity;
+	}
 
-	sprite.move(velocity * deltaTime);
+	velocity.y += acceleration * dir_y;
+	if (velocity.y > 0.f) {
+		if (velocity.y > maxVelocity)
+			velocity.y = maxVelocity;
+	}
+	else if (velocity.y < 0.f) {
+		if (velocity.y < -maxVelocity)
+			velocity.y = -maxVelocity;
+	}
 }
 
 void MovementComponent::update(const float& deltaTime)
 {
+	if (velocity.x > 0.f) {
+		velocity.x -= deceleration;
+		if (velocity.x < 0.f)
+			velocity.x = 0.f;
+	} 
+	else if (velocity.x < 0.f) {
+		velocity.x += deceleration;
+		if (velocity.x > 0.f)
+			velocity.x = 0.f;
+	}
 
+	if (velocity.y > 0.f) {
+		velocity.y -= deceleration;
+		if (velocity.y < 0.f)
+			velocity.y = 0.f;
+	}
+	else if (velocity.y < 0.f) {
+		velocity.y += deceleration;
+		if (velocity.y > 0.f)
+			velocity.y = 0.f;
+	}
+
+	sprite.move(velocity * deltaTime);
 }
 
 
