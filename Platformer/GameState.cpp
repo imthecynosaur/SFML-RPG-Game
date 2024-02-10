@@ -21,7 +21,7 @@ void GameState::initializeTextures()
 
 void GameState::initializePlayers()
 {
-	player = new Player(200, 800, &textures["countessIdle"]);
+	player = new Player(200, 800, textures["countessIdle"]);
 }
 
 GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :

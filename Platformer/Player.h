@@ -6,7 +6,7 @@ class Player :
     void initializeComponents();
 
 public:
-    Player(float x, float y, sf::Texture* texture);
+    Player(float x, float y, sf::Texture& texture);
     ~Player();
 };
 
