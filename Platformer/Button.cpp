@@ -9,8 +9,7 @@ Button::Button(float x, float y, float width, float height, sf::Font* font, std:
 
 	this->text.setFont(*font);
 	this->text.setString(text);
-	this->text.setFillColor(sf::Color::White);
-	this->text.setCharacterSize(16);
+	this->text.setCharacterSize(26);
 	this->text.setPosition(sf::Vector2f(x + (width / 2.f) - (this->text.getGlobalBounds().width / 2),
 		y + (height / 2.f) - (this->text.getGlobalBounds().height / 2)));
 
@@ -40,12 +39,15 @@ void Button::update(const sf::Vector2f mousePosition)
 	switch (buttonState) {
 	case IDLE:
 		shape.setFillColor(idleColor);
+		text.setFillColor(sf::Color(150, 150, 150, 200));
 		break;
 	case HOVER:
 		shape.setFillColor(hoverColor);
+		text.setFillColor(sf::Color(250, 250, 250, 250));
 		break;
 	case PRESSED:
 		shape.setFillColor(activeColor);
+		text.setFillColor(sf::Color(20, 20, 20, 50));
 		break;
 	default:
 		shape.setFillColor(sf::Color::Red);
