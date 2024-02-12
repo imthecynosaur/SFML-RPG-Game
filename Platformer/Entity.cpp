@@ -8,11 +8,19 @@ Entity::~Entity()
 {
 	delete movementComponent;
 	movementComponent = nullptr;
+
+	delete animationComponent;
+	animationComponent = nullptr;
 }
 
 void Entity::createMovementComponent(const float maxVelocity, const float acceleration, const float deceleration)
 {
 	movementComponent = new MovementComponent(sprite, maxVelocity, acceleration, deceleration);
+}
+
+void Entity::createAnimationComonent(sf::Sprite& sprite, sf::Texture& texture)
+{
+	animationComponent = new AnimationComponent(sprite, texture);
 }
 
 void Entity::setTexture(sf::Texture& texture)
