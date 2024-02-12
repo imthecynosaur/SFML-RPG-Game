@@ -5,7 +5,6 @@ class GameState :
 {
 	Player* player;
 	void initializeKeyBinds();
-	void initializeTextures();
 	void initializePlayers();
 
 public:

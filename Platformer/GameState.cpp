@@ -13,22 +13,15 @@ void GameState::initializeKeyBinds()
 	ifstream.close();
 }
 
-void GameState::initializeTextures()
-{
-	if (! textures["countessIdle"].loadFromFile("Assets/countess_vampire/Idle.png"))
-		std::cout << "didn't load countess Idle" << std::endl;
-}
-
 void GameState::initializePlayers()
 {
-	player = new Player(200, 800, textures["countessIdle"]);
+	player = new Player(200, 800);
 }
 
 GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
 	State(window, supportedKeys, states)
 {
 	initializeKeyBinds();
-	initializeTextures();
 	initializePlayers();
 }
 
