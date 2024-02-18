@@ -8,5 +8,7 @@ class Player :
 public:
     Player(float x, float y, sf::Texture& texture);
     ~Player();
+
+    void update(const float& deltaTime);
 };
 

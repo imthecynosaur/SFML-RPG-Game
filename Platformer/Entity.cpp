@@ -18,7 +18,7 @@ void Entity::createMovementComponent(const float maxVelocity, const float accele
 	movementComponent = new MovementComponent(sprite, maxVelocity, acceleration, deceleration);
 }
 
-void Entity::createAnimationComonent(sf::Sprite& sprite, sf::Texture& texture)
+void Entity::createAnimationComonent(sf::Texture& texture)
 {
 	animationComponent = new AnimationComponent(sprite, texture);
 }
@@ -42,8 +42,6 @@ void Entity::setPosition(const float x, const float y)
 
 void Entity::update(const float& deltaTime)
 {
-	if (movementComponent)
-		movementComponent->update(deltaTime);
 }
 
 void Entity::render(sf::RenderTarget* target)

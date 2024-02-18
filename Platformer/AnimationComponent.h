@@ -21,7 +21,7 @@ private:
 		int width{ 0 };
 		int height{ 0 };
 
-		Animation(sf::Sprite& sprite, sf::Texture& textureSheet, float animationTimer, int start_frame_x, int start_frame_y,
+		Animation(sf::Sprite& sprite, sf::Texture& textureSheet, float animationTimer,
 			int frames_x, int frames_y, int width, int height);
 		~Animation();
 
@@ -34,13 +34,14 @@ private:
 	sf::Sprite& sprite;
 	sf::Texture& textureSheet;
 	std::map <std::string, Animation*> animations;
+	Animation* lastPlayedAnimation{ nullptr };
 public:
 	AnimationComponent(sf::Sprite& sprite, sf::Texture& textureSheet);
 	~AnimationComponent();
 
 	void addAnimation(const std::string key,
 		float animationTimer,
-		int start_frame_x, int start_frame_y, int frames_x, int frames_y,
+		int frames_x, int frames_y,
 		int width, int height);
 
 	void play(const std::string key, const float& deltaTime);

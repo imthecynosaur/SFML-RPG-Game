@@ -5,6 +5,8 @@
 #include <stack>
 #include <map>
 #include <SFML/Graphics.hpp>
+
+enum movement_states { IDLE, MOVING, MOVING_LEFT, MOVING_RIGHT, MOVING_UP, MOVING_DOWN};
 class MovementComponent
 {
 	sf::Sprite& sprite;
@@ -18,6 +20,7 @@ public:
 	~MovementComponent();
 
 	const sf::Vector2f getVelocity() const;
+	const bool getState(const short unsigned state) const;
 
 	void move(const float dir_x, const float dir_y, const float deltaTime);
 	void update(const float& deltaTime);
