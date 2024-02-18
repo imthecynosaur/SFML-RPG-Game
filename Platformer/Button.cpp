@@ -3,7 +3,7 @@
 Button::Button(float x, float y, float width, float height, sf::Font* font, std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor) :
 	font(font), idleColor(idleColor), hoverColor(hoverColor), activeColor(activeColor)
 {
-	buttonState = IDLE;
+	buttonState = BTN_IDLE;
 	shape.setPosition(sf::Vector2f(x, y));
 	shape.setSize(sf::Vector2f(width, height));
 
@@ -23,29 +23,29 @@ Button::~Button()
 
 const bool Button::isPressed()
 {
-	if (buttonState == PRESSED)
+	if (buttonState == BTN_PRESSED)
 		return true;
 	return false;
 }
 
 void Button::update(const sf::Vector2f mousePosition)
 {
-	buttonState = IDLE;
+	buttonState = BTN_IDLE;
 	if (shape.getGlobalBounds().contains(mousePosition)) {
-		buttonState = HOVER;
+		buttonState = BTN_HOVER;
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-			buttonState = PRESSED;
+			buttonState = BTN_PRESSED;
 	}
 	switch (buttonState) {
-	case IDLE:
+	case BTN_IDLE:
 		shape.setFillColor(idleColor);
 		text.setFillColor(sf::Color(150, 150, 150, 200));
 		break;
-	case HOVER:
+	case BTN_HOVER:
 		shape.setFillColor(hoverColor);
 		text.setFillColor(sf::Color(250, 250, 250, 250));
 		break;
-	case PRESSED:
+	case BTN_PRESSED:
 		shape.setFillColor(activeColor);
 		text.setFillColor(sf::Color(20, 20, 20, 50));
 		break;

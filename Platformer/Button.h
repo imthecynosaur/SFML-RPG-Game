@@ -1,7 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 
-enum ButtonStates{IDLE = 0, HOVER, PRESSED};
+enum ButtonStates{BTN_IDLE = 0, BTN_HOVER, BTN_PRESSED};
 
 class Button
 {
