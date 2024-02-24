@@ -9,6 +9,7 @@ Player::Player(float x, float y, sf::Texture& texture)
 {
 	setPosition(x, y);
 
+	createHitBoxComponent(0, 0, 128.f, 128.f);
 	createMovementComponent(1000.f, 28.f, 24.f);
 	createAnimationComonent(texture);
 
@@ -39,4 +40,6 @@ void Player::update(const float& deltaTime)
 		else if (movementComponent->getState(MOVING_RIGHT))
 			animationComponent->play("Run", deltaTime);
 	}
+
+	hitBoxComponent->update();
 }
