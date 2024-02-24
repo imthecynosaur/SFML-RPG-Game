@@ -50,6 +50,9 @@ void GameState::updateInput(const float& deltaTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_DOWN"))))
 		player->move(0.f, 1.f, deltaTime);
 
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		player->attack(deltaTime);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE")))) {
 		endState();
 	}
@@ -66,5 +69,5 @@ void GameState::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = window;
-	player->render(target);
+	player->render(*target);
 }

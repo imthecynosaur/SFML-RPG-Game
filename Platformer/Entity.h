@@ -25,7 +25,7 @@ public:
 	virtual void setPosition(const float x, const float y);
 
 	virtual void update(const float& deltaTime);
-	virtual void render(sf::RenderTarget* target);
+	virtual void render(sf::RenderTarget& target);
 
 };
 

@@ -52,9 +52,9 @@ void Entity::update(const float& deltaTime)
 {
 }
 
-void Entity::render(sf::RenderTarget* target)
+void Entity::render(sf::RenderTarget& target)
 {
-		target->draw(sprite);
+		target.draw(sprite);
 		if (hitBoxComponent)
 			hitBoxComponent->render(target);
 }
