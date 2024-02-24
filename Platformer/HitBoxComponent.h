@@ -17,6 +17,6 @@ public:
 	bool checkIntersect(const sf::FloatRect& rect);
 
 	void update();
-	void render(sf::RenderTarget* target);
+	void render(sf::RenderTarget& target);
 };
 

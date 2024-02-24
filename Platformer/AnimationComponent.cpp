@@ -27,13 +27,17 @@ void AnimationComponent::Animation::reset()
 
 void AnimationComponent::Animation::play(const float& deltaTime)
 {
+	animationCycleFinished = false;
 	timer += 100 * deltaTime;
 	if (timer >= animationTimer) {
 		timer = 0.f;
-		if (currentRect != endRect) 
+		if (currentRect != endRect) {
 			currentRect.left += width;
-		else 
+		}
+		else {
+			animationCycleFinished = true;
 			currentRect.left = startRect.left;
+		}
 		sprite.setTextureRect(currentRect);
 	}
 }
@@ -63,8 +67,10 @@ void AnimationComponent::addAnimation(const std::string key,
 }
 
 
-void AnimationComponent::play(const std::string key, const float& deltaTime)
+bool AnimationComponent::play(const std::string key, const float& deltaTime, bool isPriority)
 {
+	if (isPriority)
+		addAnimationToPriorityList(animations[key]);
 	if (lastPlayedAnimation != animations[key]) {
 		if (lastPlayedAnimation == nullptr)
 			lastPlayedAnimation = animations[key];
@@ -73,5 +79,20 @@ void AnimationComponent::play(const std::string key, const float& deltaTime)
 			lastPlayedAnimation = animations[key];
 		}
 	}
-	animations[key]->play(deltaTime);
+	if (!highPriorityAnimations.empty())
+		if (!highPriorityAnimations.top()->animationCycleFinished)
+			highPriorityAnimations.top()->play(deltaTime);
+		else
+			highPriorityAnimations.pop();
+	else
+		animations[key]->play(deltaTime);
+	return animations[key]->animationCycleFinished;
+}
+
+void AnimationComponent::addAnimationToPriorityList(Animation* animation)
+{
+	if (!animation->isInPriorityList) {
+		highPriorityAnimations.push(animation);
+		animation->isInPriorityList = true;
+	}
 }
