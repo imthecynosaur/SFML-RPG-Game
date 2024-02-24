@@ -25,7 +25,6 @@ private:
 			int frames_x, int frames_y, int width, int height);
 		~Animation();
 
-		void pause();
 		void reset();
 		void play(const float& deltaTime);
 	};

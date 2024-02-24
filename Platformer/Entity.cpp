@@ -6,11 +6,19 @@ Entity::Entity()
 
 Entity::~Entity()
 {
+	delete hitBoxComponent;
+	hitBoxComponent = nullptr;
+
 	delete movementComponent;
 	movementComponent = nullptr;
 
 	delete animationComponent;
 	animationComponent = nullptr;
+}
+
+void Entity::createHitBoxComponent(float offset_x, float offset_y, float width, float height)
+{
+	hitBoxComponent = new HitBoxComponent(sprite, offset_x, offset_y, width, height);
 }
 
 void Entity::createMovementComponent(const float maxVelocity, const float acceleration, const float deceleration)
@@ -47,4 +55,6 @@ void Entity::update(const float& deltaTime)
 void Entity::render(sf::RenderTarget* target)
 {
 		target->draw(sprite);
+		if (hitBoxComponent)
+			hitBoxComponent->render(target);
 }

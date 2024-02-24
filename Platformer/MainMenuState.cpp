@@ -80,6 +80,9 @@ void MainMenuState::updateButtons()
 	if (buttons["GAME_STATE"]->isPressed()) {
 		states->push(new GameState(window, supportedKeys, states));
 	}
+	if (buttons["EDITOR_STATE"]->isPressed()) {
+		states->push(new EditorState(window, supportedKeys, states));
+	}
 }
 
 void MainMenuState::render(sf::RenderTarget* target)
