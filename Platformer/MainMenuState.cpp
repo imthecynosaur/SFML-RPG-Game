@@ -1,11 +1,7 @@
 #include "MainMenuState.h"
 #include <sstream>
 
-void MainMenuState::initializeFonts()
-{
-	if (!font.loadFromFile("Fonts/AGENCYR.TTF"))
-		throw("ERROR::MAINMENUSTATE::COULD NOT LOAD FONT");
-}
+
 
 void MainMenuState::initializeKeyBinds()
 {
@@ -41,7 +37,6 @@ void MainMenuState::initializeButtons()
 MainMenuState::MainMenuState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
 	State(window, supportedKeys, states)
 {
-	initializeFonts();
 	initializeKeyBinds();
 	initializeButtons();
 	
@@ -53,8 +48,10 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, std::map<std::string, int
 
 MainMenuState::~MainMenuState()
 {
-	for (auto it = buttons.begin(); it != buttons.end(); ++it)
+	for (auto it = buttons.begin(); it != buttons.end(); ++it) {
 		delete it->second;
+		it->second = nullptr;
+	}
 }
 
 void MainMenuState::updateInput(const float& deltaTime)

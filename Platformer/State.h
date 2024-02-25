@@ -5,11 +5,13 @@
 class State
 {
 protected:
+	sf::Font font;
 	std::stack<State*>* states;
 	sf::RenderWindow* window;
 	std::map<std::string, int>* supportedKeys;
 	std::map<std::string, int> keybinds;
 	bool quit{ false };
+	bool paused{ false };
 
 	sf::Vector2i mousePosScreen;
 	sf::Vector2i mousePosWindow;
@@ -17,6 +19,7 @@ protected:
 	
 	std::map<std::string, sf::Texture> textures;
 
+	void initializeFonts();
 	virtual void initializeKeyBinds() = 0;
 
 public:
@@ -27,6 +30,9 @@ public:
 
 	virtual void updateMousePositions();
 	
+	void pauseState();
+	void unpauseState();
+
 	virtual void endState();
 	virtual void updateInput(const float& deltaTime) = 0;
 	virtual void update(const float& deltaTime) = 0;

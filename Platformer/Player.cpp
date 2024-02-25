@@ -38,9 +38,9 @@ void Player::attack(const float& deltaTime)
 void Player::update(const float& deltaTime)
 {
 	movementComponent->update(deltaTime);
-	if (movementComponent->getState(IDLE) && !isAttacking)
+	if (!isAttacking && movementComponent->getState(IDLE))
 		animationComponent->play("Idle", deltaTime);
-	else if (movementComponent->getState(MOVING) && !isAttacking) {
+	else if (!isAttacking && movementComponent->getState(MOVING)) {
 		if (movementComponent->getState(MOVING_LEFT)) {
 			sprite.setScale(-1.f, 1.f);
 				animationComponent->play("Walk", deltaTime);
@@ -52,7 +52,7 @@ void Player::update(const float& deltaTime)
 	}
 
 	if (isAttacking) {
-		if (animationComponent->play("Jump", deltaTime, true))
+		if (animationComponent->play("Attack1", deltaTime, true))
 			isAttacking = false;
 	}
 	

@@ -1,8 +1,10 @@
 #pragma once
 #include "State.h"
+#include "PauseMenu.h"
 class GameState :
 	public State
 {
+	PauseMenu pauseMenu;
 	Player* player;
 	void initializeKeyBinds();
 	void initializeTextures();
@@ -13,6 +15,7 @@ public:
 	virtual ~GameState();
 
 	void updateInput(const float& deltaTime);
+	void updatePlayerInput(const float& deltaTime);
 	void update(const float& deltaTime);
 	void render(sf::RenderTarget* target = nullptr);
 };

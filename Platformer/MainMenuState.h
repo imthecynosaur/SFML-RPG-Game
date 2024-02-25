@@ -7,11 +7,9 @@ class MainMenuState :
 {
 	sf::Texture backGround;
 	sf::Sprite BGSprite;
-	sf::Font font;
 
 	std::map<std::string, Button*> buttons;
 
-	void initializeFonts();
 	void initializeKeyBinds();
 	void initializeButtons();
 
