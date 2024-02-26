@@ -12,6 +12,8 @@ protected:
 	std::map<std::string, int> keybinds;
 	bool quit{ false };
 	bool paused{ false };
+	float keyPressedTime{ 0.f };
+	float keyPressedTimeMax{ 100.f };
 
 	sf::Vector2i mousePosScreen;
 	sf::Vector2i mousePosWindow;
@@ -28,7 +30,10 @@ public:
 
 	const bool getQuit() const;
 
-	virtual void updateMousePositions();
+	void updateKeyPressedTime(const float& deltaTime);
+	const bool getKeyTime();
+
+	void updateMousePositions();
 	
 	void pauseState();
 	void unpauseState();

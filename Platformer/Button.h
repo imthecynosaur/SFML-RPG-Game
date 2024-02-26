@@ -19,7 +19,7 @@ public:
 	virtual ~Button();
 	
 	const bool isPressed();
-	void update(const sf::Vector2f mousePosition);
+	void update(const sf::Vector2f& mousePosition);
 	void rener(sf::RenderTarget* target);
 };
 

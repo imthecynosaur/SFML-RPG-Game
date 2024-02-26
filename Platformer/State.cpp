@@ -21,6 +21,21 @@ const bool State::getQuit() const
 	return quit;
 }
 
+void State::updateKeyPressedTime(const float& deltaTime)
+{
+	if (keyPressedTime < keyPressedTimeMax)
+		keyPressedTime += 500.f * deltaTime;
+}
+
+const bool State::getKeyTime()
+{
+	if (keyPressedTime >= keyPressedTimeMax) {
+		keyPressedTime = 0.f;
+		return true;
+	}
+	return false;
+}
+
 void State::updateMousePositions()
 {
 	mousePosScreen = sf::Mouse::getPosition();

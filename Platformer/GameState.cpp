@@ -40,17 +40,17 @@ GameState::~GameState()
 
 void GameState::updateInput(const float& deltaTime)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE")))) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE"))) && getKeyTime()) {
 		if (!paused)
 			pauseState();
 		else
 			unpauseState();
 	}
+	
 }
 
 void GameState::updatePlayerInput(const float& deltaTime)
 {
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_LEFT"))))
 		player->move(-1.f, 0.f, deltaTime);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_RIGHT"))))
@@ -69,6 +69,7 @@ void GameState::updatePlayerInput(const float& deltaTime)
 void GameState::update(const float& deltaTime)
 {
 	updateMousePositions();
+	updateKeyPressedTime(deltaTime);
 	updateInput(deltaTime);
 
 	if (!paused) {
@@ -76,7 +77,9 @@ void GameState::update(const float& deltaTime)
 		player->update(deltaTime);
 	}
 	else {
-		pauseMenu.update();
+		pauseMenu.update(mousePosView);
+		if (pauseMenu.isButtonPressed("Quit"))
+			endState();
 	}
 }
 
