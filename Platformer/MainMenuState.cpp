@@ -21,7 +21,7 @@ void MainMenuState::initializeButtons()
 		&font, "New Game",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 
-	buttons.emplace("SETTING", new Button(100, 850, 70, 35,
+	buttons.emplace("SETTING_STATE", new Button(100, 850, 70, 35,
 		&font, "Settings",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 
@@ -79,6 +79,9 @@ void MainMenuState::updateButtons()
 	}
 	if (buttons["EDITOR_STATE"]->isPressed()) {
 		states->push(new EditorState(window, supportedKeys, states));
+	}
+	if (buttons["SETTING_STATE"]->isPressed()) {
+		states->push(new SettingsState(window, supportedKeys, states));
 	}
 }
 
