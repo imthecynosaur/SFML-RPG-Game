@@ -9,8 +9,12 @@ class SettingsState :
 	std::map<std::string, gui::Button*> buttons;
 	std::map<std::string, gui::DropDownList*> dropDowns;
 
+	sf::Text optionsText;
+	std::vector<sf::VideoMode> videoModes;
+
 	void initializeKeyBinds();
 	void initializeGui();
+	void initializeText();
 
 public:
 	SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
