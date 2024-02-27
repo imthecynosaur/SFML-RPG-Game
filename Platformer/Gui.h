@@ -44,6 +44,9 @@ namespace gui
 	public:
 		DropDownList(float x, float y, float width, float height, sf::Font& font, std::string list[], unsigned elementsCount, unsigned defaultIndex = 0);
 		~DropDownList();
+
+		const unsigned short getActiveElementId() const;
+
 		bool updateCooldownTimer(const float& deltaTime);
 		void update(const sf::Vector2f& mousePosition, const float& deltaTime);
 		void render(sf::RenderTarget* target);

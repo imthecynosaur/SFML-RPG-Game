@@ -113,6 +113,11 @@ gui::DropDownList::~DropDownList()
 	}
 }
 
+const unsigned short gui::DropDownList::getActiveElementId() const
+{
+	return activeElement->getID();
+}
+
 bool gui::DropDownList::updateCooldownTimer(const float& deltaTime)
 {
 	if (cooldownTimer < keyCooldown) {

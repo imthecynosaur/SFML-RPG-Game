@@ -25,20 +25,37 @@ void SettingsState::initializeGui()
 		&font, "Apply",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 
-	std::string options[] = { "1920x1080", "800x600", "640x480"};
-	dropDowns.emplace("Resolution", new gui::DropDownList(100, 100, 100, 45, font, options, 3, 2));
+
+	std::vector<std::string> vModes;
+	for (auto& mode : videoModes)
+		vModes.push_back(std::to_string(mode.width) + 'x' + std::to_string(mode.height));
+
+	dropDowns.emplace("Resolution", new gui::DropDownList(100, 100, 100, 45, font, vModes.data(), vModes.size()));
+}
+
+void SettingsState::initializeText()
+{
+	optionsText.setFont(font);
+	optionsText.setPosition(sf::Vector2f(10.f, 100.f));
+	optionsText.setCharacterSize(20);
+	optionsText.setFillColor(sf::Color(255, 255, 255, 200));
+	optionsText.setString("Crap \nBullshit \nDogshit \nAss");
 }
 
 SettingsState::SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
 	State(window, supportedKeys, states)
 {
+	videoModes = sf::VideoMode::getFullscreenModes();
 	initializeKeyBinds();
 	initializeGui();
+	initializeText();
+
 
 	if (!backGround.loadFromFile("Assets/background/background.jpg"))
 		throw "EditorState FAILED TO LOAD BACKGROUND";
 
 	BGSprite.setTexture(backGround);
+
 }
 
 SettingsState::~SettingsState()
@@ -74,6 +91,9 @@ void SettingsState::updateGui(const float& deltaTime)
 	if (buttons["BACK"]->isPressed())
 		endState();
 
+	if (buttons["APPLY"]->isPressed())
+		window->create(videoModes[dropDowns["Resolution"]->getActiveElementId()], "test", sf::Style::Default);
+
 	for (const auto& it : dropDowns)
 		it.second->update(mousePosView, deltaTime);
 }
@@ -85,6 +105,7 @@ void SettingsState::render(sf::RenderTarget* target)
 	target->draw(BGSprite);
 	renderGui(target);
 
+	target->draw(optionsText);
 
 	//REMOVE LATER
 	sf::Text mousePositionText;
