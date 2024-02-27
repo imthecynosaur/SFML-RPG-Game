@@ -20,7 +20,7 @@ void EditorState::initializeKeyBinds()
 
 void EditorState::initializeButtons()
 {
-	buttons.emplace("GAME_STATE", new Button(100, 750, 90, 35,
+	buttons.emplace("GAME_STATE", new gui::Button(100, 750, 90, 35,
 		&font, "New Game",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 }
@@ -70,7 +70,7 @@ void EditorState::render(sf::RenderTarget* target)
 void EditorState::renderButtons(sf::RenderTarget* target)
 {
 	for (const auto& it : buttons)
-		it.second->rener(target);
+		it.second->render(target);
 }
 
 

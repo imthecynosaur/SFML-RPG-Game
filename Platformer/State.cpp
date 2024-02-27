@@ -24,7 +24,7 @@ const bool State::getQuit() const
 void State::updateKeyPressedTime(const float& deltaTime)
 {
 	if (keyPressedTime < keyPressedTimeMax)
-		keyPressedTime += 500.f * deltaTime;
+		keyPressedTime += 50.f * deltaTime;
 }
 
 const bool State::getKeyTime()

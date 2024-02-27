@@ -1,6 +1,6 @@
 #pragma once
 #include "Player.h"
-#include "Button.h"
+#include "Gui.h"
 
 class State
 {
@@ -13,7 +13,7 @@ protected:
 	bool quit{ false };
 	bool paused{ false };
 	float keyPressedTime{ 0.f };
-	float keyPressedTimeMax{ 100.f };
+	float keyPressedTimeMax{ 10.f };
 
 	sf::Vector2i mousePosScreen;
 	sf::Vector2i mousePosWindow;

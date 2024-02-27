@@ -10,7 +10,7 @@ class Game
 	bool fullScreen{ false };
 
 	sf::Clock clock;
-	float deltaTime{};
+	float deltaTime{0.f};
 
 	std::stack<State*> states;
 

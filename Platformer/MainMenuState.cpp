@@ -17,19 +17,19 @@ void MainMenuState::initializeKeyBinds()
 
 void MainMenuState::initializeButtons()
 {
-	buttons.emplace("GAME_STATE", new Button(100, 750, 90, 35,
+	buttons.emplace("GAME_STATE", new gui::Button(100, 750, 90, 35,
 		&font, "New Game",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 
-	buttons.emplace("SETTING_STATE", new Button(100, 850, 70, 35,
+	buttons.emplace("SETTING_STATE", new gui::Button(100, 850, 70, 35,
 		&font, "Settings",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 
-	buttons.emplace("EDITOR_STATE", new Button(1700, 1000, 50, 35,
+	buttons.emplace("EDITOR_STATE", new gui::Button(1700, 1000, 50, 35,
 		&font, "Editor",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 
-	buttons.emplace("EXIT_STATE", new Button(100, 1000, 40, 35,
+	buttons.emplace("EXIT_STATE", new gui::Button(100, 1000, 40, 35,
 		&font, "Quit",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 }
@@ -106,6 +106,6 @@ void MainMenuState::render(sf::RenderTarget* target)
 void MainMenuState::renderButtons(sf::RenderTarget* target)
 {
 	for (const auto& it : buttons)
-		it.second->rener(target);
+		it.second->render(target);
 }
 

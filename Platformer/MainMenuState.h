@@ -1,7 +1,6 @@
 #pragma once
 #include "GameState.h"
 #include "EditorState.h"
-#include "Button.h"
 #include "SettingsState.h"
 class MainMenuState :
 	public State
@@ -9,7 +8,7 @@ class MainMenuState :
 	sf::Texture backGround;
 	sf::Sprite BGSprite;
 
-	std::map<std::string, Button*> buttons;
+	std::map<std::string, gui::Button*> buttons;
 
 	void initializeKeyBinds();
 	void initializeButtons();
