@@ -1,5 +1,5 @@
 #pragma once
-#include "Button.h"
+#include "Gui.h"
 class PauseMenu
 {
 	sf::Font& font;
@@ -8,7 +8,7 @@ class PauseMenu
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 
-	std::map<std::string, Button*> buttons;
+	std::map<std::string, gui::Button*> buttons;
 
 	
 public:

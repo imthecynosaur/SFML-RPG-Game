@@ -48,7 +48,6 @@ void Game::initializeKeys()
 void Game::initializeStates()
 {
 	states.push(new MainMenuState(window, &supportedKeys, &states));
-	//states.push(new GameState(window, &supportedKeys));
 }
 
 Game::Game()

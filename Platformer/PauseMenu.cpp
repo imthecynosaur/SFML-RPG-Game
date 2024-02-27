@@ -42,7 +42,7 @@ PauseMenu::~PauseMenu()
 
 void PauseMenu::initializeButtons()
 {
-	buttons.emplace("Quit", new Button(container.getPosition().x + (container.getSize().x / 2.f) - 10.f,
+	buttons.emplace("Quit", new gui::Button(container.getPosition().x + (container.getSize().x / 2.f) - 10.f,
 		container.getPosition().y + container.getSize().y - 50.f,
 		40, 35,
 		&font, "Quit",
@@ -66,7 +66,7 @@ void PauseMenu::render(sf::RenderTarget& target)
 	target.draw(container);
 
 	for (auto& button : buttons)
-		button.second->rener(&target);
+		button.second->render(&target);
 
 	target.draw(menuText);
 }

@@ -1,12 +1,11 @@
 #pragma once
 #include "State.h"
-#include "Button.h"
 class EditorState :
     public State
 {
 	sf::Font font;
 
-	std::map<std::string, Button*> buttons;
+	std::map<std::string, gui::Button*> buttons;
 
 	void initializeFonts();
 	void initializeKeyBinds();

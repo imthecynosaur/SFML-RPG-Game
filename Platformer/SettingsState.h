@@ -6,10 +6,11 @@ class SettingsState :
 	sf::Texture backGround;
 	sf::Sprite BGSprite;
 
-	std::map<std::string, Button*> buttons;
+	std::map<std::string, gui::Button*> buttons;
+	std::map<std::string, gui::DropDownList*> dropDowns;
 
 	void initializeKeyBinds();
-	void initializeButtons();
+	void initializeGui();
 
 public:
 	SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
@@ -17,8 +18,8 @@ public:
 
 	void updateInput(const float& deltaTime);
 	void update(const float& deltaTime);
-	void updateButtons();
+	void updateGui(const float& deltaTime);
 	void render(sf::RenderTarget* target = nullptr);
-	void renderButtons(sf::RenderTarget* target);
+	void renderGui(sf::RenderTarget* target);
 };
 

@@ -15,18 +15,25 @@ void SettingsState::initializeKeyBinds()
 	ifstream.close();
 }
 
-void SettingsState::initializeButtons()
+void SettingsState::initializeGui()
 {
-	buttons.emplace("EXIT_STATE", new Button(1100, 1000, 40, 35,
-		&font, "Quit",
+	buttons.emplace("BACK", new gui::Button(1800, 1000, 40, 35,
+		&font, "Back",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
+
+	buttons.emplace("APPLY", new gui::Button(1800, 950, 40, 35,
+		&font, "Apply",
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
+
+	std::string options[] = { "1920x1080", "800x600", "640x480"};
+	dropDowns.emplace("Resolution", new gui::DropDownList(100, 100, 100, 45, font, options, 3, 2));
 }
 
 SettingsState::SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
 	State(window, supportedKeys, states)
 {
 	initializeKeyBinds();
-	initializeButtons();
+	initializeGui();
 
 	if (!backGround.loadFromFile("Assets/background/background.jpg"))
 		throw "EditorState FAILED TO LOAD BACKGROUND";
@@ -40,6 +47,11 @@ SettingsState::~SettingsState()
 		delete it->second;
 		it->second = nullptr;
 	}
+
+	for (auto& it : dropDowns) {
+		delete it.second;
+		it.second = nullptr;
+	}
 }
 
 void SettingsState::updateInput(const float& deltaTime)
@@ -51,16 +63,19 @@ void SettingsState::update(const float& deltaTime)
 	updateMousePositions();
 	updateInput(deltaTime);
 
-	updateButtons();
+	updateGui(deltaTime);
 }
 
-void SettingsState::updateButtons()
+void SettingsState::updateGui(const float& deltaTime)
 {
 	for (const auto& it : buttons)
 		it.second->update(mousePosView);
 
-	if (buttons["EXIT_STATE"]->isPressed())
+	if (buttons["BACK"]->isPressed())
 		endState();
+
+	for (const auto& it : dropDowns)
+		it.second->update(mousePosView, deltaTime);
 }
 
 void SettingsState::render(sf::RenderTarget* target)
@@ -68,7 +83,8 @@ void SettingsState::render(sf::RenderTarget* target)
 	if (!target)
 		target = window;
 	target->draw(BGSprite);
-	renderButtons(target);
+	renderGui(target);
+
 
 	//REMOVE LATER
 	sf::Text mousePositionText;
@@ -81,9 +97,12 @@ void SettingsState::render(sf::RenderTarget* target)
 	target->draw(mousePositionText);
 }
 
-void SettingsState::renderButtons(sf::RenderTarget* target)
+void SettingsState::renderGui(sf::RenderTarget* target)
 {
 	for (const auto& it : buttons)
-		it.second->rener(target);
+		it.second->render(target);
+
+	for (const auto& it : dropDowns)
+		it.second->render(target);
 }
 
