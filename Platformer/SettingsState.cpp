@@ -1,5 +1,5 @@
+#include "stdafx.h"
 #include "SettingsState.h"
-#include <sstream>
 
 
 

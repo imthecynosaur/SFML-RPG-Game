@@ -1,5 +1,5 @@
+#include "stdafx.h"
 #include "GameState.h"
-#include <iostream>
 
 void GameState::initializeKeyBinds()
 {

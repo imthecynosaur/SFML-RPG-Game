@@ -1,4 +1,4 @@
-#include <iostream>
+#include "stdafx.h"
 #include "Game.h"
 
 void Game::initializeWindow()
