@@ -1,10 +1,4 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <fstream>
-#include <stack>
-#include <map>
-#include <SFML/Graphics.hpp>
 
 enum movement_states { IDLE, MOVING, MOVING_LEFT, MOVING_RIGHT, MOVING_UP, MOVING_DOWN};
 class MovementComponent

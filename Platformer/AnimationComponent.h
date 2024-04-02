@@ -1,10 +1,5 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <fstream>
-#include <stack>
-#include <map>
-#include <SFML/Graphics.hpp>
+
 class AnimationComponent
 {
 private:
