@@ -1,11 +1,15 @@
 #pragma once
 #include "State.h"
 #include "PauseMenu.h"
+#include "TileMap.h"
 class GameState :
 	public State
 {
 	PauseMenu pauseMenu;
 	Player* player;
+
+	TileMap map;
+
 	void initializeKeyBinds();
 	void initializeTextures();
 	void initializePlayers();

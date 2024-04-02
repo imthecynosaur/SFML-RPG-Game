@@ -1,35 +1,21 @@
 #include "stdafx.h"
 #include "Game.h"
 
+void Game::initializeGraphicsSettings()
+{
+	gfxSettings.loadFromFile("Config/graphics.ini");
+}
+
 void Game::initializeWindow()
 {
-	std::ifstream ifstream("Config/window.ini");
-	videoModes = sf::VideoMode::getFullscreenModes();
-
-	std::string title { "None" };
-	sf::VideoMode windowBounds{ sf::VideoMode::getDesktopMode() };
-	unsigned frameRateLimit{ 144 };
-	bool verticalSyncEnabled{ false };
-	unsigned antialiasingLevel{ 0 };
-
-	if (ifstream.is_open()) {
-		std::getline(ifstream, title);
-		ifstream >> windowBounds.width >> windowBounds.height;
-		ifstream >> fullScreen;
-		ifstream >> frameRateLimit;
-		ifstream >> verticalSyncEnabled;
-		ifstream >> antialiasingLevel;
-	}
-
-	ifstream.close();
-
-	contextSettings.antialiasingLevel = antialiasingLevel;
-	if (fullScreen)
-		window = new sf::RenderWindow(windowBounds, title, sf::Style::Fullscreen, contextSettings);
+	if (gfxSettings.fullScreen)
+		window = new sf::RenderWindow(gfxSettings.resolution,
+			gfxSettings.title, sf::Style::Fullscreen, gfxSettings.contextSettings);
 	else
-		window = new sf::RenderWindow(windowBounds, title, sf::Style::Titlebar | sf::Style::Close, contextSettings);
-	window->setFramerateLimit(frameRateLimit);
-	window->setVerticalSyncEnabled(verticalSyncEnabled);
+		window = new sf::RenderWindow(gfxSettings.resolution,
+			gfxSettings.title, sf::Style::Titlebar | sf::Style::Close, gfxSettings.contextSettings);
+	window->setFramerateLimit(gfxSettings.frameRateLimit);
+	window->setVerticalSyncEnabled(gfxSettings.verticalSync);
 }
 
 void Game::initializeKeys()
@@ -45,13 +31,16 @@ void Game::initializeKeys()
 	ifstream.close();
 }
 
+
+
 void Game::initializeStates()
 {
-	states.push(new MainMenuState(window, &supportedKeys, &states));
+	states.push(new MainMenuState(window, gfxSettings, &supportedKeys, &states));
 }
 
 Game::Game()
 {
+	initializeGraphicsSettings();
 	initializeKeys();
 	initializeWindow();
 	initializeStates();

@@ -3,11 +3,9 @@
 
 class Game
 {
+	GraphicsSettings gfxSettings;
 	sf::RenderWindow* window{nullptr};
 	sf::Event event;
-	std::vector<sf::VideoMode> videoModes;
-	sf::ContextSettings contextSettings;
-	bool fullScreen{ false };
 
 	sf::Clock clock;
 	float deltaTime{0.f};
@@ -17,6 +15,7 @@ class Game
 	std::map<std::string, int> supportedKeys;
 
 	void initializeKeys();
+	void initializeGraphicsSettings();
 	void initializeWindow();
 	void initializeStates();
 
