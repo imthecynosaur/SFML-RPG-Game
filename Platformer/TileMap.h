@@ -3,12 +3,17 @@
 class TileMap
 {
 private:
-	unsigned gridSizeU{ 50 }; 
-	unsigned layers{ 5 };
-	sf::Vector2u maxSize{ 5000, 5000 };
+	float gridSizef{ 50.f };
+	unsigned gridSizeU{ static_cast<unsigned>(gridSizef)};
+	unsigned layers{ 1 };
+	sf::Vector2u maxSize{ 1000, 1000 };
 	std::vector<std::vector<std::vector<Tile>>> map;
 
 public:
 	TileMap();
+
+
+	void update();
+	void render(sf::RenderTarget& target);
 };
 

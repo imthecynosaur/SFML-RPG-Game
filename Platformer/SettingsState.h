@@ -1,8 +1,10 @@
 #pragma once
 #include "State.h"
+#include "GraphicsSettings.h"
 class SettingsState :
     public State
 {
+	GraphicsSettings& gfxSettings;
 	sf::Texture backGround;
 	sf::Sprite BGSprite;
 
@@ -17,7 +19,8 @@ class SettingsState :
 	void initializeText();
 
 public:
-	SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	SettingsState(sf::RenderWindow* window, GraphicsSettings& gfxSettings,
+		std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
 	virtual ~SettingsState();
 
 	void updateInput(const float& deltaTime);

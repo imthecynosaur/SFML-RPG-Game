@@ -17,11 +17,11 @@ void SettingsState::initializeKeyBinds()
 
 void SettingsState::initializeGui()
 {
-	buttons.emplace("BACK", new gui::Button(1800, 1000, 40, 35,
+	buttons.emplace("BACK", new gui::Button(120, 1000, 40, 35,
 		&font, "Back",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 
-	buttons.emplace("APPLY", new gui::Button(1800, 950, 40, 35,
+	buttons.emplace("APPLY", new gui::Button(120, 950, 40, 35,
 		&font, "Apply",
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));
 
@@ -42,8 +42,9 @@ void SettingsState::initializeText()
 	optionsText.setString("Crap \nBullshit \nDogshit \nAss");
 }
 
-SettingsState::SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
-	State(window, supportedKeys, states)
+SettingsState::SettingsState(sf::RenderWindow* window, GraphicsSettings& gfxSettings,
+	std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
+	State(window, supportedKeys, states), gfxSettings(gfxSettings)
 {
 	videoModes = sf::VideoMode::getFullscreenModes();
 	initializeKeyBinds();
@@ -91,8 +92,10 @@ void SettingsState::updateGui(const float& deltaTime)
 	if (buttons["BACK"]->isPressed())
 		endState();
 
-	if (buttons["APPLY"]->isPressed())
-		window->create(videoModes[dropDowns["Resolution"]->getActiveElementId()], "test", sf::Style::Default);
+	if (buttons["APPLY"]->isPressed()) {
+		gfxSettings.resolution = videoModes[dropDowns["Resolution"]->getActiveElementId()];
+		window->create(gfxSettings.resolution, gfxSettings.title, sf::Style::Default);
+	}
 
 	for (const auto& it : dropDowns)
 		it.second->update(mousePosView, deltaTime);
