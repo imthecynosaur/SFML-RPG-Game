@@ -40,7 +40,7 @@ GameState::~GameState()
 
 void GameState::updateInput(const float& deltaTime)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE"))) && getKeyTime()) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE"))) && getKeyCooldown()) {
 		if (!paused)
 			pauseState();
 		else
@@ -69,7 +69,7 @@ void GameState::updatePlayerInput(const float& deltaTime)
 void GameState::update(const float& deltaTime)
 {
 	updateMousePositions();
-	updateKeyPressedTime(deltaTime);
+	updateKeyLastPressed(deltaTime);
 	updateInput(deltaTime);
 
 	if (!paused) {

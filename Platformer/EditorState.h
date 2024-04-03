@@ -1,11 +1,23 @@
 #pragma once
 #include "State.h"
+#include "PauseMenu.h"
+#include "TileMap.h"
+
+
+class State;
+class Gui;
+class PauseMenu;
+class TileMap;
+
 class EditorState :
     public State
 {
 	sf::Font font;
+	PauseMenu pauseMenu;
 
 	std::map<std::string, gui::Button*> buttons;
+	
+	TileMap map;
 
 	void initializeFonts();
 	void initializeKeyBinds();
