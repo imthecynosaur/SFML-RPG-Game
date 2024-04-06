@@ -1,6 +1,6 @@
 #pragma once
 #include "State.h"
-#include "GraphicsSettings.h"
+
 class SettingsState :
     public State
 {
