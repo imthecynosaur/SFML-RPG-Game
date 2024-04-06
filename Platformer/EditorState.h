@@ -1,13 +1,6 @@
 #pragma once
-#include "State.h"
-#include "PauseMenu.h"
-#include "TileMap.h"
 
-
-class State;
-class Gui;
 class PauseMenu;
-class TileMap;
 
 class EditorState :
     public State

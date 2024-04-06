@@ -1,6 +1,8 @@
 #include "stdafx.h"
+#include "GameState.h"
+#include "EditorState.h"
+#include "SettingsState.h"
 #include "MainMenuState.h"
-
 
 
 void MainMenuState::initializeKeyBinds()

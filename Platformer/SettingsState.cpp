@@ -2,7 +2,6 @@
 #include "SettingsState.h"
 
 
-
 void SettingsState::initializeKeyBinds()
 {
 	std::ifstream ifstream("Config/mainMenuState_keybinds.ini");

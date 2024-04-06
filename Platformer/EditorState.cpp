@@ -1,5 +1,9 @@
 #include "stdafx.h"
+#include "State.h"
+#include "PauseMenu.h"
+#include "TileMap.h"
 #include "EditorState.h"
+
 
 void EditorState::initializeFonts()
 {

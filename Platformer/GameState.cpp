@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameState.h"
 
+
 void GameState::initializeKeyBinds()
 {
 	std::ifstream ifstream("Config/gamestate_keybinds.ini");
