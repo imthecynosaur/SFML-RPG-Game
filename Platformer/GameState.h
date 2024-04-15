@@ -10,14 +10,15 @@ class GameState :
 	PauseMenu pauseMenu;
 	Player* player;
 
-	TileMap map;
+	TileMap* tileMap;
 
 	void initializeKeyBinds();
 	void initializeTextures();
 	void initializePlayers();
+	void initialzeTileMap();
 
 public:
-	GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	GameState(StateData* stateData);
 	virtual ~GameState();
 
 	void updateInput(const float& deltaTime);

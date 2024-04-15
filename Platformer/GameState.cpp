@@ -25,18 +25,27 @@ void GameState::initializePlayers()
 	player = new Player(200, 800, textures["countessVampire"]);
 }
 
-GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
-	State(window, supportedKeys, states), pauseMenu(*window, font)
+void GameState::initialzeTileMap()
+{
+	tileMap = new TileMap(stateData->gridSize, 10, 10);
+}
+
+GameState::GameState(StateData* stateData) :
+	State(stateData), pauseMenu(*window, font)
 {
 	initializeKeyBinds();
 	initializeTextures();
 	initializePlayers();
+	initialzeTileMap();
 }
 
 GameState::~GameState()
 {
 	delete player;
 	player = nullptr;
+
+	delete tileMap;
+	tileMap = nullptr;
 }
 
 void GameState::updateInput(const float& deltaTime)

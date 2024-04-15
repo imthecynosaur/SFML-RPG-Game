@@ -7,9 +7,11 @@ void State::initializeFonts()
 		throw("ERROR::COULD NOT LOAD FONT");
 }
 
-State::State(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
-	window(window), supportedKeys(supportedKeys), states(states)
+State::State(StateData* stateData) : 
+	stateData(stateData),window(stateData->window),supportedKeys(stateData->supportedKeys),
+	states(stateData->states), gridSize(stateData->gridSize)
 {
+	
 	initializeFonts();
 }
 
@@ -42,6 +44,8 @@ void State::updateMousePositions()
 	mousePosScreen = sf::Mouse::getPosition();
 	mousePosWindow = sf::Mouse::getPosition(*window);
 	mousePosView = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+	mousePosGrid = sf::Vector2u(static_cast<unsigned>(mousePosView.x) / static_cast<unsigned>(gridSize),
+													static_cast<unsigned>(mousePosView.y) / static_cast<unsigned>(gridSize));
 }
 
 void State::pauseState()
