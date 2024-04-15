@@ -30,18 +30,37 @@ void EditorState::initializeButtons()
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)));*/
 }
 
-EditorState::EditorState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
-	State(window, supportedKeys, states), pauseMenu(*window, font)
+void EditorState::initializeGUI()
+{
+	selectorRect.setSize(sf::Vector2f(stateData->gridSize, stateData->gridSize));
+	selectorRect.setFillColor(sf::Color::Transparent);
+	selectorRect.setOutlineThickness(1.f);
+	selectorRect.setOutlineColor(sf::Color::Green);
+}
+
+void EditorState::initializeTileMap()
+{
+	tileMap = new TileMap(stateData->gridSize, 10, 10);
+
+}
+
+EditorState::EditorState(StateData* stateData) :
+	State(stateData), pauseMenu(*window, font)
 {
 	initializeFonts();
 	initializeKeyBinds();
 	initializeButtons();
+	initializeGUI();
+	initializeTileMap();
 }
 
 EditorState::~EditorState()
 {
 	for (auto it = buttons.begin(); it != buttons.end(); ++it)
 		delete it->second;
+
+	delete tileMap;
+	tileMap = nullptr;
 }
 
 void EditorState::updateInput(const float& deltaTime)
@@ -54,14 +73,24 @@ void EditorState::updateInput(const float& deltaTime)
 	}
 }
 
+void EditorState::updateEditorInput(const float& dt)
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && getKeyCooldown()) {
+		tileMap->addTile(mousePosGrid.x, mousePosGrid.y, 0);
+	}
+}
+
 void EditorState::update(const float& deltaTime)
 {
 	updateMousePositions();
 	updateKeyLastPressed(deltaTime);
 	updateInput(deltaTime);
 
-	if (!paused) 
+	if (!paused) {
+		updateGUI();
 		updateButtons();
+		updateEditorInput(deltaTime);
+	}
 	else {
 		pauseMenu.update(mousePosView);
 		if (pauseMenu.isButtonPressed("Quit"))
@@ -76,13 +105,25 @@ void EditorState::updateButtons()
 
 }
 
+void EditorState::updateGUI()
+{
+	selectorRect.setPosition(mousePosGrid.x	 * gridSize, mousePosGrid.y * gridSize);
+}
+
+void EditorState::renderGUI(sf::RenderTarget* target)
+{
+	target->draw(selectorRect);
+}
+
 void EditorState::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = window;
-	renderButtons(target);
 
-	map.render(*target);
+	tileMap->render(*target);
+
+	renderGUI(target);
+	renderButtons(target);
 
 	if (paused) {
 		pauseMenu.render(*target);

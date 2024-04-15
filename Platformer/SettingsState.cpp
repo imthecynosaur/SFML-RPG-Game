@@ -41,9 +41,8 @@ void SettingsState::initializeText()
 	optionsText.setString("Crap \nBullshit \nDogshit \nAss");
 }
 
-SettingsState::SettingsState(sf::RenderWindow* window, GraphicsSettings& gfxSettings,
-	std::map<std::string, int>* supportedKeys, std::stack<State*>* states) :
-	State(window, supportedKeys, states), gfxSettings(gfxSettings)
+SettingsState::SettingsState(StateData* stateData) :
+	State(stateData)
 {
 	videoModes = sf::VideoMode::getFullscreenModes();
 	initializeKeyBinds();
@@ -92,8 +91,8 @@ void SettingsState::updateGui(const float& deltaTime)
 		endState();
 
 	if (buttons["APPLY"]->isPressed()) {
-		gfxSettings.resolution = videoModes[dropDowns["Resolution"]->getActiveElementId()];
-		window->create(gfxSettings.resolution, gfxSettings.title, sf::Style::Default);
+		stateData->gfxSettings->resolution = videoModes[dropDowns["Resolution"]->getActiveElementId()];
+		window->create(stateData->gfxSettings->resolution, stateData->gfxSettings->title, sf::Style::Default);
 	}
 
 	for (const auto& it : dropDowns)

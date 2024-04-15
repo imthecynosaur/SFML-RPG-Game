@@ -4,7 +4,6 @@
 class MainMenuState :
 	public State
 {
-	GraphicsSettings& gfxSettings;
 	sf::Texture backGround;
 	sf::Sprite BGSprite;
 
@@ -14,8 +13,7 @@ class MainMenuState :
 	void initializeButtons();
 
 public:
-	MainMenuState(sf::RenderWindow* window, GraphicsSettings& gfxSettings,
-		std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	MainMenuState(StateData* stateData);
 	virtual ~MainMenuState();
 
 	void updateInput(const float& deltaTime);

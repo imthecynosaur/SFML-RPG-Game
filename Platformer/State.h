@@ -3,22 +3,38 @@
 #include "GraphicsSettings.h"
 #include "Gui.h"
 
+class State;
+
+class StateData 
+{
+public:
+	float gridSize{};
+	sf::RenderWindow* window{};
+	GraphicsSettings* gfxSettings{};
+	std::map<std::string, int>* supportedKeys{};
+	std::stack<State*>* states{};
+};
+
+
 class State
 {
 protected:
-	sf::Font font;
-	std::stack<State*>* states;
-	sf::RenderWindow* window;
-	std::map<std::string, int>* supportedKeys;
-	std::map<std::string, int> keybinds;
+	StateData* stateData{};
+	sf::Font font{};
+	std::stack<State*>* states{};
+	sf::RenderWindow* window{};
+	std::map<std::string, int>* supportedKeys{};
+	std::map<std::string, int> keybinds{};
 	bool quit{ false };
 	bool paused{ false };
 	float keyLastPressed{ 0.f };		// time elapsed since key was last pressed
 	float keyCooldown{ 10.f };
+	float gridSize{};
 
-	sf::Vector2i mousePosScreen;
-	sf::Vector2i mousePosWindow;
-	sf::Vector2f mousePosView;
+	sf::Vector2i mousePosScreen{};
+	sf::Vector2i mousePosWindow{};
+	sf::Vector2f mousePosView{};
+	sf::Vector2u mousePosGrid{};
 	
 	std::map<std::string, sf::Texture> textures;
 
@@ -26,7 +42,7 @@ protected:
 	virtual void initializeKeyBinds() = 0;
 
 public:
-	State(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	State(StateData* stateData);
 	virtual ~State();
 
 	const bool getQuit() const;

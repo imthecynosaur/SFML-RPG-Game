@@ -1,5 +1,4 @@
 #pragma once
-
 class PauseMenu;
 
 class EditorState :
@@ -10,19 +9,26 @@ class EditorState :
 
 	std::map<std::string, gui::Button*> buttons;
 	
-	TileMap map;
+	TileMap* tileMap;
+
+	sf::RectangleShape selectorRect;
 
 	void initializeFonts();
 	void initializeKeyBinds();
 	void initializeButtons();
+	void initializeGUI();
+	void initializeTileMap();
 
 public:
-	EditorState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	EditorState(StateData* stateData);
 	virtual ~EditorState();
 
 	void updateInput(const float& deltaTime);
+	void updateEditorInput(const float& dt);
 	void update(const float& deltaTime);
 	void updateButtons();
+	void updateGUI();
+	void renderGUI(sf::RenderTarget* target);
 	void render(sf::RenderTarget* target = nullptr);
 	void renderButtons(sf::RenderTarget* target);
 };

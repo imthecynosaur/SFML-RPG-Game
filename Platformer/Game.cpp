@@ -18,6 +18,7 @@ void Game::initializeWindow()
 	window->setVerticalSyncEnabled(gfxSettings.verticalSync);
 }
 
+
 void Game::initializeKeys()
 {
 	std::ifstream ifstream("Config/supported_keys.ini");
@@ -31,11 +32,18 @@ void Game::initializeKeys()
 	ifstream.close();
 }
 
-
+void Game::initializeStateData()
+{
+	stateData.window = window;
+	stateData.gfxSettings = &gfxSettings;
+	stateData.supportedKeys = &supportedKeys;
+	stateData.states = &states;
+	stateData.gridSize = gridSize;
+}
 
 void Game::initializeStates()
 {
-	states.push(new MainMenuState(window, gfxSettings, &supportedKeys, &states));
+	states.push(new MainMenuState(&stateData));
 }
 
 Game::Game()
@@ -43,6 +51,7 @@ Game::Game()
 	initializeGraphicsSettings();
 	initializeKeys();
 	initializeWindow();
+	initializeStateData();
 	initializeStates();
 }
 

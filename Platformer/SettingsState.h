@@ -4,7 +4,6 @@
 class SettingsState :
     public State
 {
-	GraphicsSettings& gfxSettings;
 	sf::Texture backGround;
 	sf::Sprite BGSprite;
 
@@ -19,8 +18,7 @@ class SettingsState :
 	void initializeText();
 
 public:
-	SettingsState(sf::RenderWindow* window, GraphicsSettings& gfxSettings,
-		std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	SettingsState(StateData* stateData);
 	virtual ~SettingsState();
 
 	void updateInput(const float& deltaTime);
