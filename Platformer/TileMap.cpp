@@ -2,23 +2,20 @@
 #include "TileMap.h"
 
 TileMap::TileMap(float gridSize, unsigned width, unsigned height) :
-	gridSizef{gridSize}, maxSize {width, height}
+	gridSizef{ gridSize }, maxSize{ width, height }
 {
-	map.resize(maxSize.x);
+	map.resize(maxSize.x, std::vector<std::vector<Tile*>>());
 	for (size_t x{ 0 }; x < maxSize.x; x++) {
-
-		map.push_back(std::vector<std::vector<Tile*>>());
 		for (size_t y{ 0 }; y < maxSize.y; y++) {
-			map[x].resize(maxSize.y);
-			map[x].push_back(std::vector<Tile*>());
+			map[x].resize(maxSize.y, std::vector<Tile*>());
 			for (size_t z{ 0 }; z < layers; z++) {
-				map[x][y].resize(layers);
-				map[x][y].push_back(nullptr);
+				map[x][y].resize(layers, nullptr);
 			}
 		}
-
 	}
-
+	if (!tilesTexture.loadFromFile("Assets/Texture/TX Tileset Grass.png"))
+		std::cout << "couldn't load grass texture\n";
+	
 }
 
 TileMap::~TileMap()
@@ -50,17 +47,23 @@ void TileMap::render(sf::RenderTarget& target)
 	}
 }
 
-void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z)
+void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, const sf::IntRect& textureRect)
 {
 	if (x >= 0 && y >= 0 && z >= 0 &&  x < maxSize.x && y < maxSize.y && z < layers) { 
 		if (map[x][y][z] == nullptr) {
-			map[x][y][z] = new Tile(x * gridSizef, y * gridSizef, gridSizef);
+			map[x][y][z] = new Tile(x * gridSizef, y * gridSizef, gridSizef, tilesTexture, textureRect);
 		}
 	}
 }
 
-void TileMap::removeTile()
+void TileMap::removeTile(const unsigned x, const unsigned y, const unsigned z)
 {
+	if (x >= 0 && y >= 0 && z >= 0 && x < maxSize.x && y < maxSize.y && z < layers) {
+		if (map[x][y][z] != nullptr) {
+			delete map[x][y][z];
+			map[x][y][z] = nullptr;
+		}
+	}
 }
 
 

@@ -40,12 +40,12 @@ void EditorState::initializeGUI()
 
 void EditorState::initializeTileMap()
 {
-	tileMap = new TileMap(stateData->gridSize, 10, 10);
+	tileMap = new TileMap(stateData->gridSize, 60, 34);
 
 }
 
 EditorState::EditorState(StateData* stateData) :
-	State(stateData), pauseMenu(*window, font)
+	State(stateData), pauseMenu(*window, font), textureRect(0, 0, 32, 32)
 {
 	initializeFonts();
 	initializeKeyBinds();
@@ -76,8 +76,19 @@ void EditorState::updateInput(const float& deltaTime)
 void EditorState::updateEditorInput(const float& dt)
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && getKeyCooldown()) {
-		tileMap->addTile(mousePosGrid.x, mousePosGrid.y, 0);
+		tileMap->addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect);
+	} 
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && getKeyCooldown()) {
+		tileMap->removeTile(mousePosGrid.x, mousePosGrid.y, 0);
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && getKeyCooldown()) {
+		if (textureRect.top < 256)
+			textureRect.top += 32;
+		else
+			textureRect.top = 0;
+	}
+
 }
 
 void EditorState::update(const float& deltaTime)
@@ -135,7 +146,7 @@ void EditorState::render(sf::RenderTarget* target)
 	mousePositionText.setFont(font);
 	mousePositionText.setCharacterSize(12);
 	std::stringstream ss;
-	ss << mousePosView.x << " " << mousePosView.y;
+	ss << mousePosView.x << " " << mousePosView.y << "\n" << textureRect.left << " " << textureRect.top;
 	mousePositionText.setString(ss.str());
 	target->draw(mousePositionText);
 }

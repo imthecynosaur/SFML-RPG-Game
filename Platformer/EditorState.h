@@ -11,6 +11,7 @@ class EditorState :
 	
 	TileMap* tileMap;
 
+	sf::IntRect textureRect;
 	sf::RectangleShape selectorRect;
 
 	void initializeFonts();
