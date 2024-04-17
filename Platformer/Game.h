@@ -11,7 +11,7 @@ class Game
 	sf::Clock clock;
 	float deltaTime{ 0.f };
 
-	float gridSize{ 100.f };
+	float gridSize{ 32.f };
 
 	std::stack<State*> states;
 
