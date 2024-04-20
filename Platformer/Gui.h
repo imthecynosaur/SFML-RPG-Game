@@ -50,5 +50,26 @@ namespace gui
 		void update(const sf::Vector2f& mousePosition, const float& deltaTime);
 		void render(sf::RenderTarget* target);
 	};
+
+	class TextureSelector 
+	{
+	private:
+		float gridSize;
+		bool active{ false };
+		sf::RectangleShape bounds;
+		sf::Sprite sheet;
+		sf::RectangleShape selector;
+		sf::Vector2u mousePosGrid;
+		sf::IntRect textureRect;
+
+	public:
+		TextureSelector(float x, float y, float width, float height,float gridSize, const sf::Texture* textureSheet);
+
+		const bool& getActive() const;
+		const sf::IntRect& getTextureRect() const;
+
+		void update(const sf::Vector2i& mousePoswindow);
+		void render(sf::RenderTarget& target);
+	};
 }
 

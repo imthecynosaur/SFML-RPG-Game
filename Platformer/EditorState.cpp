@@ -11,6 +11,13 @@ void EditorState::initializeFonts()
 		throw("ERROR::EditorState::COULD NOT LOAD FONT");
 }
 
+void EditorState::initializetexts()
+{
+	cursorText.setFont(font);
+	cursorText.setFillColor(sf::Color::White);
+	cursorText.setCharacterSize(16);
+}
+
 void EditorState::initializeKeyBinds()
 {
 	std::ifstream ifstream("Config/editorState_keybinds.ini");
@@ -33,9 +40,14 @@ void EditorState::initializeButtons()
 void EditorState::initializeGUI()
 {
 	selectorRect.setSize(sf::Vector2f(stateData->gridSize, stateData->gridSize));
-	selectorRect.setFillColor(sf::Color::Transparent);
+	selectorRect.setFillColor(sf::Color(255, 255, 255, 150));
 	selectorRect.setOutlineThickness(1.f);
 	selectorRect.setOutlineColor(sf::Color::Green);
+
+	selectorRect.setTexture(tileMap->getTileSheet());
+	selectorRect.setTextureRect(textureRect);
+
+	textureSelector = new gui::TextureSelector(20.f, 20.f, 500.f, 500.f, gridSize, tileMap->getTileSheet());
 }
 
 void EditorState::initializeTileMap()
@@ -45,13 +57,14 @@ void EditorState::initializeTileMap()
 }
 
 EditorState::EditorState(StateData* stateData) :
-	State(stateData), pauseMenu(*window, font), textureRect(0, 0, 32, 32)
+	State(stateData), pauseMenu(*window, font), textureRect(0, 0, gridSize, gridSize)
 {
 	initializeFonts();
+	initializetexts();
 	initializeKeyBinds();
 	initializeButtons();
-	initializeGUI();
 	initializeTileMap();
+	initializeGUI();
 }
 
 EditorState::~EditorState()
@@ -61,6 +74,9 @@ EditorState::~EditorState()
 
 	delete tileMap;
 	tileMap = nullptr;
+
+	delete textureSelector;
+	textureSelector = nullptr;
 }
 
 void EditorState::updateInput(const float& deltaTime)
@@ -76,17 +92,16 @@ void EditorState::updateInput(const float& deltaTime)
 void EditorState::updateEditorInput(const float& dt)
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && getKeyCooldown()) {
-		tileMap->addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect);
+		if (!textureSelector->getActive())
+			tileMap->addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect);
+		else
+		{
+			textureRect = textureSelector->getTextureRect();
+		}
 	} 
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && getKeyCooldown()) {
-		tileMap->removeTile(mousePosGrid.x, mousePosGrid.y, 0);
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && getKeyCooldown()) {
-		if (textureRect.top < 256)
-			textureRect.top += 32;
-		else
-			textureRect.top = 0;
+		if (!textureSelector->getActive())
+			tileMap->removeTile(mousePosGrid.x, mousePosGrid.y, 0);
 	}
 
 }
@@ -118,12 +133,29 @@ void EditorState::updateButtons()
 
 void EditorState::updateGUI()
 {
-	selectorRect.setPosition(mousePosGrid.x	 * gridSize, mousePosGrid.y * gridSize);
+	textureSelector->update(mousePosWindow);
+	if (!textureSelector->getActive()) {
+		selectorRect.setPosition(mousePosGrid.x	 * gridSize, mousePosGrid.y * gridSize);
+		selectorRect.setTextureRect(textureRect); 
+	}
+
+	cursorText.setPosition(mousePosView.x + 20.f, mousePosView.y - 20.f);
+	std::stringstream ss;
+	ss << mousePosView.x << " " << mousePosView.y << 
+		"\n" << mousePosGrid.x << " " << mousePosGrid.y <<
+		"\n" << textureRect.left << " " << textureRect.top;
+	cursorText.setString(ss.str());
+
 }
 
 void EditorState::renderGUI(sf::RenderTarget* target)
 {
-	target->draw(selectorRect);
+	if(!textureSelector->getActive())
+		target->draw(selectorRect);
+
+	//REMOVE LATER
+	textureSelector->render(*target);
+	target->draw(cursorText);
 }
 
 void EditorState::render(sf::RenderTarget* target)
@@ -139,16 +171,6 @@ void EditorState::render(sf::RenderTarget* target)
 	if (paused) {
 		pauseMenu.render(*target);
 	}
-
-	//REMOVE LATER
-	sf::Text mousePositionText;
-	mousePositionText.setPosition(mousePosView.x, mousePosView.y - 15);
-	mousePositionText.setFont(font);
-	mousePositionText.setCharacterSize(12);
-	std::stringstream ss;
-	ss << mousePosView.x << " " << mousePosView.y << "\n" << textureRect.left << " " << textureRect.top;
-	mousePositionText.setString(ss.str());
-	target->draw(mousePositionText);
 }
 
 void EditorState::renderButtons(sf::RenderTarget* target)

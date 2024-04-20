@@ -13,7 +13,7 @@ TileMap::TileMap(float gridSize, unsigned width, unsigned height) :
 			}
 		}
 	}
-	if (!tilesTexture.loadFromFile("Assets/Texture/TX Tileset Grass.png"))
+	if (!tileSheet.loadFromFile("Assets/Texture/TX Tileset Grass.png"))
 		std::cout << "couldn't load grass texture\n";
 	
 }
@@ -30,6 +30,13 @@ TileMap::~TileMap()
 
 	}
 }
+
+const sf::Texture* TileMap::getTileSheet() const
+{
+	return &tileSheet;
+}
+
+
 
 void TileMap::update()
 {
@@ -51,7 +58,7 @@ void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, cons
 {
 	if (x >= 0 && y >= 0 && z >= 0 &&  x < maxSize.x && y < maxSize.y && z < layers) { 
 		if (map[x][y][z] == nullptr) {
-			map[x][y][z] = new Tile(x * gridSizef, y * gridSizef, gridSizef, tilesTexture, textureRect);
+			map[x][y][z] = new Tile(x * gridSizef, y * gridSizef, gridSizef, tileSheet, textureRect);
 		}
 	}
 }

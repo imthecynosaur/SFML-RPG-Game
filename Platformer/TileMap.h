@@ -8,11 +8,13 @@ private:
 	unsigned layers{ 1 };
 	sf::Vector2u maxSize{};
 	std::vector<std::vector<std::vector<Tile*>>> map{};
-	sf::Texture tilesTexture{};
+	sf::Texture tileSheet;
 
 public:
 	TileMap(float gridSize, unsigned width, unsigned height);
 	~TileMap();
+
+	const sf::Texture* getTileSheet() const;
 
 	void update();
 	void render(sf::RenderTarget& target);

@@ -157,3 +157,81 @@ void gui::DropDownList::render(sf::RenderTarget* target)
 			button->render(target);
 	}
 }
+
+
+
+
+
+// --------------------------------TextureSelector----------------------------------------//
+
+
+
+
+
+gui::TextureSelector::TextureSelector(float x, float y, float width, float height, float gridSize, const sf::Texture* textureSheet) :
+	gridSize(gridSize)
+{
+	bounds.setSize(sf::Vector2f(width, height));
+	bounds.setPosition(x, y);
+	bounds.setFillColor(sf::Color(50, 50, 50, 100));
+	bounds.setOutlineThickness(1.f);
+	bounds.setOutlineColor(sf::Color(255, 255, 255, 200));
+
+	sheet.setTexture(*textureSheet);
+	sheet.setPosition(x, y);
+
+	if (sheet.getGlobalBounds().width > bounds.getGlobalBounds().width) {
+		sheet.setTextureRect(sf::IntRect(0, 0, bounds.getGlobalBounds().width, sheet.getGlobalBounds().height));
+	}
+	if (sheet.getGlobalBounds().width > bounds.getGlobalBounds().width) {
+		sheet.setTextureRect(sf::IntRect(0, 0, sheet.getGlobalBounds().width, bounds.getGlobalBounds().height));
+	}
+
+	selector.setPosition(x, y);
+	selector.setSize(sf::Vector2f(gridSize, gridSize));
+	selector.setFillColor(sf::Color::Transparent);
+	selector.setOutlineThickness(1.f);
+	selector.setOutlineColor(sf::Color::Red);
+
+	textureRect.width = gridSize;
+	textureRect.height = gridSize;
+}
+
+const bool& gui::TextureSelector::getActive() const
+{
+	return active;
+}
+
+const sf::IntRect& gui::TextureSelector::getTextureRect() const
+{
+	return textureRect;
+}
+
+void gui::TextureSelector::update(const sf::Vector2i& mousePoswindow)
+{
+	if (bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePoswindow)))
+		active = true;
+	else
+		active = false;
+
+	if (active) {
+		mousePosGrid.x = (mousePoswindow.x - bounds.getPosition().x) / gridSize;
+		mousePosGrid.y = (mousePoswindow.y - bounds.getPosition().y) / gridSize;
+
+		selector.setPosition(bounds.getPosition().x + mousePosGrid.x * gridSize,
+			bounds.getPosition().y + mousePosGrid.y * gridSize);
+
+		textureRect.left = selector.getPosition().x - bounds.getPosition().x;
+		textureRect.top = selector.getPosition().y - bounds.getPosition().y;
+	}
+
+	
+}
+
+void gui::TextureSelector::render(sf::RenderTarget& target)
+{
+	target.draw(bounds);
+	target.draw(sheet);
+	if (active)
+		target.draw(selector);
+}

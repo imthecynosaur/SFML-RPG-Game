@@ -5,6 +5,7 @@ class EditorState :
     public State
 {
 	sf::Font font;
+	sf::Text cursorText;
 	PauseMenu pauseMenu;
 
 	std::map<std::string, gui::Button*> buttons;
@@ -14,11 +15,14 @@ class EditorState :
 	sf::IntRect textureRect;
 	sf::RectangleShape selectorRect;
 
+	gui::TextureSelector* textureSelector;
+
 	void initializeFonts();
+	void initializetexts();
 	void initializeKeyBinds();
 	void initializeButtons();
-	void initializeGUI();
 	void initializeTileMap();
+	void initializeGUI();
 
 public:
 	EditorState(StateData* stateData);
