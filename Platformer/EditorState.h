@@ -12,6 +12,8 @@ class EditorState :
 	
 	TileMap* tileMap;
 
+	sf::RectangleShape sidebar;
+
 	sf::IntRect textureRect;
 	sf::RectangleShape selectorRect;
 
@@ -32,7 +34,7 @@ public:
 	void updateEditorInput(const float& dt);
 	void update(const float& deltaTime);
 	void updateButtons();
-	void updateGUI();
+	void updateGUI(const float& deltaTime);
 	void renderGUI(sf::RenderTarget* target);
 	void render(sf::RenderTarget* target = nullptr);
 	void renderButtons(sf::RenderTarget* target);
