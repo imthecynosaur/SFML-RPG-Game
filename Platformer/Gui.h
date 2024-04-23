@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 
 enum ButtonStates{BTN_IDLE = 0, BTN_HOVER, BTN_PRESSED};
 
@@ -34,7 +35,7 @@ namespace gui
 	class DropDownList
 	{
 		float cooldownTimer{ 0.f };
-		float keyCooldown{ 10.f };
+		const float keyCooldown{ 10.f };
 		sf::Font& font;
 		gui::Button* activeElement;
 		std::vector<gui::Button*> list;
@@ -54,8 +55,12 @@ namespace gui
 	class TextureSelector 
 	{
 	private:
+		float cooldownTimer{ 0.f };
+		const float keyCooldown{ 10.f };
 		float gridSize;
 		bool active{ false };
+		bool hidden{ false };
+		Button* hideBtn{ nullptr };
 		sf::RectangleShape bounds;
 		sf::Sprite sheet;
 		sf::RectangleShape selector;
@@ -63,12 +68,19 @@ namespace gui
 		sf::IntRect textureRect;
 
 	public:
-		TextureSelector(float x, float y, float width, float height,float gridSize, const sf::Texture* textureSheet);
+		TextureSelector(float x, float y, float width, float height,float gridSize, const sf::Texture* textureSheet,
+			sf::Font& font);
+		~TextureSelector();
+
+		bool getHidden();
+		void setHidden(bool value);
+
+		bool updateCooldownTimer(const float& deltaTime);
 
 		const bool& getActive() const;
 		const sf::IntRect& getTextureRect() const;
 
-		void update(const sf::Vector2i& mousePoswindow);
+		void update(const sf::Vector2i& mousePoswindow, const float& deltaTime);
 		void render(sf::RenderTarget& target);
 	};
 }

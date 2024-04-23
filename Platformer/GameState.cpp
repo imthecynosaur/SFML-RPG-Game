@@ -27,7 +27,7 @@ void GameState::initializePlayers()
 
 void GameState::initialzeTileMap()
 {
-	tileMap = new TileMap(stateData->gridSize, 10, 10);
+	tileMap = new TileMap(stateData->gridSize, 10, 10, "Assets/Texture/TX Tileset Grass.png");
 }
 
 GameState::GameState(StateData* stateData) :

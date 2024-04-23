@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "TileMap.h"
 
-TileMap::TileMap(float gridSize, unsigned width, unsigned height) :
-	gridSizef{ gridSize }, maxSize{ width, height }
+TileMap::TileMap(float gridSize, unsigned width, unsigned height, std::string textureAddress) :
+	gridSizef{ gridSize }, maxSize{ width, height }, textureAddress{textureAddress}
 {
 	map.resize(maxSize.x, std::vector<std::vector<Tile*>>());
 	for (size_t x{ 0 }; x < maxSize.x; x++) {
@@ -13,12 +13,12 @@ TileMap::TileMap(float gridSize, unsigned width, unsigned height) :
 			}
 		}
 	}
-	if (!tileSheet.loadFromFile("Assets/Texture/TX Tileset Grass.png"))
+	if (!tileSheet.loadFromFile(textureAddress))
 		std::cout << "couldn't load grass texture\n";
 	
 }
 
-TileMap::~TileMap()
+void TileMap::cleanUp()
 {
 	for (size_t x{ 0 }; x < maxSize.x; x++) {
 		for (size_t y{ 0 }; y < maxSize.y; y++) {
@@ -27,8 +27,14 @@ TileMap::~TileMap()
 				map[x][y][z] = nullptr;
 			}
 		}
-
 	}
+	map.clear();
+}
+
+TileMap::~TileMap()
+{
+	saveToFile("Config/testmap.slmp");
+	cleanUp();
 }
 
 const sf::Texture* TileMap::getTileSheet() const
@@ -36,6 +42,87 @@ const sf::Texture* TileMap::getTileSheet() const
 	return &tileSheet;
 }
 
+
+void TileMap::saveToFile(const std::string fileName)
+{
+	/*Saves the entire tilemap to a text-file
+	* Format:
+	* Basic:
+	* Size x y
+	* gridSize
+	* layers
+	* texture file
+	* 
+	* All tiles:
+	* gridPos x y layer, Texture rect x y, collision, type
+	*/
+
+	std::ofstream ofStream;
+	ofStream.open(fileName);
+
+	if (ofStream.is_open()) {
+		ofStream << maxSize.x << " " << maxSize.y << "\n"
+			<< gridSizeU << "\n"
+			<< layers << "\n"
+			<< textureAddress << "\n";
+
+		for (size_t x{ 0 }; x < maxSize.x; x++) {
+			for (size_t y{ 0 }; y < maxSize.y; y++) {
+				for (size_t z{ 0 }; z < layers; z++) {
+					if (map[x][y][z]) {
+						ofStream << x << " " << y << " " << z << " " << map[x][y][z]->getAsString() << " ";
+					}
+				}
+			}
+		}
+	}
+	else {
+		std::cout << "Error::TileMap::Couldn't save to file, file name:" << fileName << '\n';
+	}
+
+	ofStream.close();
+}
+
+
+
+void TileMap::loadFromFile(const std::string fileName)
+{
+	std::ifstream ifStream;
+	ifStream.open(fileName);
+
+	if (ifStream.is_open()) {
+		ifStream >> maxSize.x >> maxSize.y >> gridSizeU >> layers >> textureAddress;
+
+		//clean up
+		cleanUp();
+
+		map.resize(maxSize.x, std::vector<std::vector<Tile*>>());
+		for (size_t x{ 0 }; x < maxSize.x; x++) {
+			for (size_t y{ 0 }; y < maxSize.y; y++) {
+				map[x].resize(maxSize.y, std::vector<Tile*>());
+				for (size_t z{ 0 }; z < layers; z++) {
+					map[x][y].resize(layers, nullptr);
+				}
+			}
+		}
+		if (!tileSheet.loadFromFile(textureAddress))
+			std::cout << "Error::TileMap::Couldn't load textures, file name:" << textureAddress << '\n';
+
+		unsigned x{}, y{}, z{}, textureRectX{}, textureRectY{};
+		bool collision{ false };
+		short type{ 0 };
+
+		while (ifStream >> x >> y >> z >> textureRectX >> textureRectY >> collision >> type) {
+			map[x][y][z] = new Tile(x, y, gridSizef, tileSheet,
+				sf::IntRect(textureRectX, textureRectY, gridSizeU, gridSizeU), collision, type);
+		}
+	}
+	else {
+		std::cout << "Error::TileMap::Couldn't load from file, file name:" << fileName << '\n';
+	}
+
+	ifStream.close();
+}
 
 
 void TileMap::update()
@@ -58,7 +145,7 @@ void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, cons
 {
 	if (x >= 0 && y >= 0 && z >= 0 &&  x < maxSize.x && y < maxSize.y && z < layers) { 
 		if (map[x][y][z] == nullptr) {
-			map[x][y][z] = new Tile(x * gridSizef, y * gridSizef, gridSizef, tileSheet, textureRect);
+			map[x][y][z] = new Tile(x, y, gridSizef, tileSheet, textureRect);
 		}
 	}
 }
@@ -72,5 +159,7 @@ void TileMap::removeTile(const unsigned x, const unsigned y, const unsigned z)
 		}
 	}
 }
+
+
 
 
