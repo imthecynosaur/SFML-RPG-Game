@@ -4,6 +4,8 @@ class PauseMenu;
 class EditorState :
     public State
 {
+	sf::View view;
+
 	sf::Font font;
 	sf::Text cursorText;
 	PauseMenu pauseMenu;
@@ -19,6 +21,12 @@ class EditorState :
 
 	gui::TextureSelector* textureSelector;
 
+	float cameraSpeed{ 500.f };
+	bool collision{ false };
+	short type{ TileTypes::DEFAULT };
+
+
+	void initializeView();
 	void initializeFonts();
 	void initializetexts();
 	void initializeKeyBinds();
@@ -31,7 +39,7 @@ public:
 	virtual ~EditorState();
 
 	void updateInput(const float& deltaTime);
-	void updateEditorInput(const float& dt);
+	void updateEditorInput(const float& deltaTime);
 	void update(const float& deltaTime);
 	void updateButtons();
 	void updateGUI(const float& deltaTime);

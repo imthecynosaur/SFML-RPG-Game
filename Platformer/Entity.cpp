@@ -44,6 +44,11 @@ void Entity::move(const float dir_x, const float dir_y, const float deltaTime)
 	}
 }
 
+const sf::Vector2f& Entity::getPosition() const
+{
+	return sprite.getPosition();
+}
+
 void Entity::setPosition(const float x, const float y)
 {
 	sprite.setPosition(x, y);

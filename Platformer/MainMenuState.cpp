@@ -71,7 +71,7 @@ void MainMenuState::update(const float& deltaTime)
 void MainMenuState::updateButtons()
 {
 	for (const auto& it : buttons)
-		it.second->update(mousePosView);
+		it.second->update(mousePosWindow);
 
 	if (buttons["EXIT_STATE"]->isPressed())
 		endState();

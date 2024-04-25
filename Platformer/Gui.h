@@ -10,7 +10,7 @@ namespace gui
 		short unsigned buttonState;
 		short unsigned id;
 
-		sf::RectangleShape shape;
+		sf::Shape* shape;
 		sf::Font* font;
 		sf::Text text;
 		sf::Color idleColor;
@@ -18,8 +18,9 @@ namespace gui
 		sf::Color activeColor;
 
 	public:
-		Button(float x, float y, float width, float height, sf::Font* font, std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, short unsigned id = 0);
-		virtual ~Button();
+		Button(float x, float y, float width, float height, sf::Font* font, std::string text,
+			sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, short unsigned id = 0, bool isCircle = false, float radius = 0);
+		 ~Button();
 
 		const bool isPressed();
 		const std::string getText() const;
@@ -28,7 +29,7 @@ namespace gui
 		void setText(const std::string text);
 		void setId(const short unsigned id);
 
-		void update(const sf::Vector2f& mousePosition);
+		void update(const sf::Vector2i& mousePosWindow);
 		void render(sf::RenderTarget* target);
 	};
 
@@ -48,7 +49,7 @@ namespace gui
 		const unsigned short getActiveElementId() const;
 
 		bool updateCooldownTimer(const float& deltaTime);
-		void update(const sf::Vector2f& mousePosition, const float& deltaTime);
+		void update(const sf::Vector2i& mousePosWindow, const float& deltaTime);
 		void render(sf::RenderTarget* target);
 	};
 
