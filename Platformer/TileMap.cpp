@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TileMap.h"
+#include "format"
 
 TileMap::TileMap(float gridSize, unsigned width, unsigned height, std::string textureAddress) :
 	gridSizef{ gridSize }, maxSize{ width, height }, textureAddress{textureAddress}
@@ -33,7 +34,6 @@ void TileMap::cleanUp()
 
 TileMap::~TileMap()
 {
-	saveToFile("Config/testmap.slmp");
 	cleanUp();
 }
 
@@ -85,13 +85,19 @@ void TileMap::saveToFile(const std::string fileName)
 
 
 
-void TileMap::loadFromFile(const std::string fileName)
+void TileMap::loadFromFile(const std::string fileName) 
 {
 	std::ifstream ifStream;
 	ifStream.open(fileName);
 
 	if (ifStream.is_open()) {
-		ifStream >> maxSize.x >> maxSize.y >> gridSizeU >> layers >> textureAddress;
+		ifStream >> maxSize.x >> maxSize.y >> gridSizeU >> layers;
+
+		// IMPORTANT !!! THIS LINE CAN CAUSE BUGS IF THE TEXTURE ADDRESS DOESN'T CONTAIN WHITE SPACES!!
+		std::getline(ifStream, textureAddress);
+		// IMPORTANT !!! THIS LINE CAN CAUSE BUGS IF THE TEXTURE ADDRESS DOESN'T CONTAIN WHITE SPACES!!
+
+		std::getline(ifStream, textureAddress);
 
 		//clean up
 		cleanUp();
@@ -105,8 +111,9 @@ void TileMap::loadFromFile(const std::string fileName)
 				}
 			}
 		}
+		
 		if (!tileSheet.loadFromFile(textureAddress))
-			std::cout << "Error::TileMap::Couldn't load textures, file name:" << textureAddress << '\n';
+			std::cout << "Error::TileMap::Couldn't load texture, file name:" << textureAddress << '\n';
 
 		unsigned x{}, y{}, z{}, textureRectX{}, textureRectY{};
 		bool collision{ false };
@@ -118,7 +125,7 @@ void TileMap::loadFromFile(const std::string fileName)
 		}
 	}
 	else {
-		std::cout << "Error::TileMap::Couldn't load from file, file name:" << fileName << '\n';
+		std::cout << "Error::TileMap::Couldn't open file, file name:" << fileName << '\n';
 	}
 
 	ifStream.close();
@@ -141,11 +148,12 @@ void TileMap::render(sf::RenderTarget& target)
 	}
 }
 
-void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, const sf::IntRect& textureRect)
+void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, const sf::IntRect& textureRect,
+	const bool collision, const short type)
 {
 	if (x >= 0 && y >= 0 && z >= 0 &&  x < maxSize.x && y < maxSize.y && z < layers) { 
 		if (map[x][y][z] == nullptr) {
-			map[x][y][z] = new Tile(x, y, gridSizef, tileSheet, textureRect);
+			map[x][y][z] = new Tile(x, y, gridSizef, tileSheet, textureRect, collision, type);
 		}
 	}
 }

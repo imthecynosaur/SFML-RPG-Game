@@ -2,25 +2,31 @@
 #include "Gui.h"
 #include <functional>
 
-gui::Button::Button(float x, float y, float width, float height, sf::Font* font, std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, short unsigned id) :
+gui::Button::Button(float x, float y, float width, float height, sf::Font* font, std::string text,
+	sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, short unsigned id, bool isCircle, float radius) :
 	font(font), idleColor(idleColor), hoverColor(hoverColor), activeColor(activeColor), id(id)
 {
 	buttonState = BTN_IDLE;
-	shape.setPosition(sf::Vector2f(x, y));
-	shape.setSize(sf::Vector2f(width, height));
+	if (!isCircle)
+		shape = new sf::RectangleShape(sf::Vector2f(width, height));
+	else
+		shape = new sf::CircleShape(radius, 300);
+
+	shape->setPosition(sf::Vector2f(x, y));
+	shape->setFillColor(idleColor);
+	
 
 	this->text.setFont(*font);
 	this->text.setString(text);
 	this->text.setCharacterSize(26);
 	this->text.setPosition(sf::Vector2f(x + (width / 2.f) - (this->text.getGlobalBounds().width / 2),
 		y + (height / 2.f) - (this->text.getGlobalBounds().height / 2)));
-
-
-	shape.setFillColor(idleColor);
 }
 
 gui::Button::~Button()
 {
+	delete shape;
+	shape = nullptr;
 }
 
 const bool gui::Button::isPressed()
@@ -50,36 +56,36 @@ void gui::Button::setId(const short unsigned id)
 	this->id = id;
 }
 
-void gui::Button::update(const sf::Vector2f& mousePosition)
+void gui::Button::update(const sf::Vector2i& mousePosWindow)
 {
 	buttonState = BTN_IDLE;
-	if (shape.getGlobalBounds().contains(mousePosition)) {
+	if (shape->getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow))) {
 		buttonState = BTN_HOVER;
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			buttonState = BTN_PRESSED;
 	}
 	switch (buttonState) {
 	case BTN_IDLE:
-		shape.setFillColor(idleColor);
+		shape->setFillColor(idleColor);
 		text.setFillColor(sf::Color(150, 150, 150, 200));
 		break;
 	case BTN_HOVER:
-		shape.setFillColor(hoverColor);
+		shape->setFillColor(hoverColor);
 		text.setFillColor(sf::Color(250, 250, 250, 250));
 		break;
 	case BTN_PRESSED:
-		shape.setFillColor(activeColor);
+		shape->setFillColor(activeColor);
 		text.setFillColor(sf::Color(20, 20, 20, 50));
 		break;
 	default:
-		shape.setFillColor(sf::Color::Red);
+		shape->setFillColor(sf::Color::Red);
 		break;
 	}
 }
 
 void gui::Button::render(sf::RenderTarget* target)
 {
-	target->draw(shape);
+	target->draw(*shape);
 	target->draw(text);
 }
 
@@ -129,9 +135,9 @@ bool gui::DropDownList::updateCooldownTimer(const float& deltaTime)
 	return true;
 }
 
-void gui::DropDownList::update(const sf::Vector2f& mousePosition, const float& deltaTime)
+void gui::DropDownList::update(const sf::Vector2i& mousePosWindow, const float& deltaTime)
 {
-	activeElement->update(mousePosition);
+	activeElement->update(mousePosWindow);
 
 	if (updateCooldownTimer(deltaTime) && activeElement->isPressed()) {
 		cooldownTimer = 0.f;
@@ -140,7 +146,7 @@ void gui::DropDownList::update(const sf::Vector2f& mousePosition, const float& d
 
 	if (visible) {
 		for (auto& button : list) {
-			button->update(mousePosition);
+			button->update(mousePosWindow);
 			if (button->isPressed() && updateCooldownTimer(deltaTime)) {
 				visible = false;
 				activeElement->setText(button->getText());
@@ -238,7 +244,7 @@ const sf::IntRect& gui::TextureSelector::getTextureRect() const
 
 void gui::TextureSelector::update(const sf::Vector2i& mousePoswindow, const float& deltaTime)
 {
-	hideBtn->update(static_cast<sf::Vector2f>(mousePoswindow));
+	hideBtn->update(mousePoswindow);
 
 	if (updateCooldownTimer(deltaTime) && hideBtn->isPressed()) {
 		/*hidden = !hidden;

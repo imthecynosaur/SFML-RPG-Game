@@ -39,13 +39,17 @@ const bool State::getKeyCooldown()
 	return false;
 }
 
-void State::updateMousePositions()
+void State::updateMousePositions(sf::View* view)
 {
 	mousePosScreen = sf::Mouse::getPosition();
 	mousePosWindow = sf::Mouse::getPosition(*window);
+	if (view)
+		window->setView(*view);
 	mousePosView = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 	mousePosGrid = sf::Vector2u(static_cast<unsigned>(mousePosView.x) / static_cast<unsigned>(gridSize),
 													static_cast<unsigned>(mousePosView.y) / static_cast<unsigned>(gridSize));
+
+	window->setView(window->getDefaultView());
 }
 
 void State::pauseState()

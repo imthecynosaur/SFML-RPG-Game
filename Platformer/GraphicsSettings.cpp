@@ -2,7 +2,7 @@
 #include "GraphicsSettings.h"
 
 GraphicsSettings::GraphicsSettings() {
-	contextSettings.antialiasingLevel = 0;
+	contextSettings.antialiasingLevel = 8;
 }
 
 void GraphicsSettings::saveToFile(const std::string path) {

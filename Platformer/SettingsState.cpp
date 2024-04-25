@@ -85,7 +85,7 @@ void SettingsState::update(const float& deltaTime)
 void SettingsState::updateGui(const float& deltaTime)
 {
 	for (const auto& it : buttons)
-		it.second->update(mousePosView);
+		it.second->update(mousePosWindow);
 
 	if (buttons["BACK"]->isPressed())
 		endState();
@@ -96,7 +96,7 @@ void SettingsState::updateGui(const float& deltaTime)
 	}
 
 	for (const auto& it : dropDowns)
-		it.second->update(mousePosView, deltaTime);
+		it.second->update(mousePosWindow, deltaTime);
 }
 
 void SettingsState::render(sf::RenderTarget* target)

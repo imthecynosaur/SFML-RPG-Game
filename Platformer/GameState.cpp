@@ -2,6 +2,12 @@
 #include "GameState.h"
 
 
+void GameState::initializeView()
+{
+	view.setSize(stateData->gfxSettings->resolution.width, stateData->gfxSettings->resolution.height);
+	view.setCenter(stateData->gfxSettings->resolution.width / 2.f, stateData->gfxSettings->resolution.height / 2.f);
+}
+
 void GameState::initializeKeyBinds()
 {
 	std::ifstream ifstream("Config/gamestate_keybinds.ini");
@@ -27,12 +33,14 @@ void GameState::initializePlayers()
 
 void GameState::initialzeTileMap()
 {
-	tileMap = new TileMap(stateData->gridSize, 10, 10, "Assets/Texture/TX Tileset Grass.png");
+	tileMap = new TileMap(stateData->gridSize, 60, 34, "Assets/Texture/TX_Tileset_Grass.png");
+	tileMap->loadFromFile("Config/testmap.slmp");
 }
 
 GameState::GameState(StateData* stateData) :
 	State(stateData), pauseMenu(*window, font)
 {
+	initializeView();
 	initializeKeyBinds();
 	initializeTextures();
 	initializePlayers();
@@ -46,6 +54,11 @@ GameState::~GameState()
 
 	delete tileMap;
 	tileMap = nullptr;
+}
+
+void GameState::updateView(const float& deltaTime)
+{
+	view.setCenter(player->getPosition());
 }
 
 void GameState::updateInput(const float& deltaTime)
@@ -78,16 +91,17 @@ void GameState::updatePlayerInput(const float& deltaTime)
 
 void GameState::update(const float& deltaTime)
 {
-	updateMousePositions();
+	updateMousePositions(&view);
 	updateKeyLastPressed(deltaTime);
 	updateInput(deltaTime);
 
 	if (!paused) {
+		updateView(deltaTime);
 		updatePlayerInput(deltaTime);
 		player->update(deltaTime);
 	}
 	else {
-		pauseMenu.update(mousePosView);
+		pauseMenu.update(mousePosWindow);
 		if (pauseMenu.isButtonPressed("Quit"))
 			endState();
 	}
@@ -97,11 +111,12 @@ void GameState::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = window;
-	
-	//map.render(*target);
+	target->setView(view);
+	tileMap->render(*target);
 	player->render(*target);
 
 	if (paused) {
+		target->setView(window->getDefaultView());
 		pauseMenu.render(*target);
 	}
 }

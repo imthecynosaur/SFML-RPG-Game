@@ -50,7 +50,7 @@ public:
 	void updateKeyLastPressed(const float& deltaTime);
 	const bool getKeyCooldown();
 
-	void updateMousePositions();
+	void updateMousePositions(sf::View* view = nullptr);
 	
 	void pauseState();
 	void unpauseState();
